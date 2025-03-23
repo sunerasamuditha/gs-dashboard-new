@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/gs-dashboard-new/static/css/main.b1efdf4f.css",
+    "main.js": "/gs-dashboard-new/static/js/main.a646bd6a.js",
+    "static/js/488.1bd5a7f7.chunk.js": "/gs-dashboard-new/static/js/488.1bd5a7f7.chunk.js",
+    "static/media/wavy-water.png": "/gs-dashboard-new/static/media/wavy-water.ce9f65b4a1092c22b061.png",
+    "static/media/collage.jpg": "/gs-dashboard-new/static/media/collage.79c718315695384a27a7.jpg",
+    "index.html": "/gs-dashboard-new/index.html",
+    "main.b1efdf4f.css.map": "/gs-dashboard-new/static/css/main.b1efdf4f.css.map",
+    "main.a646bd6a.js.map": "/gs-dashboard-new/static/js/main.a646bd6a.js.map",
+    "488.1bd5a7f7.chunk.js.map": "/gs-dashboard-new/static/js/488.1bd5a7f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b1efdf4f.css",
+    "static/js/main.a646bd6a.js"
+  ]
+}
