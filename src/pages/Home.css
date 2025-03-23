@@ -1,0 +1,78 @@
+.home-section {
+  position: relative;
+  min-height: 100vh;
+  background: url('/images/collage.jpg') no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slideshow-container {
+  width: 960px;
+  height: 540px;
+  margin: 0 auto;
+  background: #0098da;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.slide-image {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.slide-text {
+  font-size: 2.5rem;
+  color: white;
+  
+  padding: 10%;
+  border-radius: 12px;
+  text-align: center;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.scroll-down {
+  margin-top: 30px;
+  background: #0098da;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 152, 218, 0.5);
+}
+
+.scroll-down .btn-scroll {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.scroll-down:hover {
+  background: #ffffff;
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+}
+
+.scroll-down:hover .btn-scroll {
+  color: #0098da;
+}
+
+@media (max-width: 768px) {
+  .slideshow-container {
+    width: 95%;
+  }
+  .slide-text {
+    font-size: 1.8rem;
+    padding: 20px;
+  }
+}

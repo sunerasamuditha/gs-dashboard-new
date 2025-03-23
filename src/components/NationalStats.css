@@ -1,0 +1,47 @@
+.national-stats-container {
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 32px rgba(31, 38, 135, 0.37);
+}
+
+.national-stats-title {
+  background: rgba(0, 0, 102, 0.8); /* dark blue with transparency */
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.national-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.national-stats-table thead tr {
+  background: rgba(153, 204, 255, 0.5); /* glass-like light blue */
+}
+
+.national-stats-table th {
+  padding: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  text-align: center;
+  font-weight: 600;
+  font-style: italic;
+  font-size: large;
+}
+.national-stats-table td {
+  padding: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  text-align: center;
+  font-weight: 600;
+  font-size: large;
+}
+
+.national-stats-table tbody tr:nth-child(even) {
+  background: rgba(242, 242, 242, 0.3);
+}

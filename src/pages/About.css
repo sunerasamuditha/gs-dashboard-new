@@ -1,0 +1,77 @@
+/* src/pages/About.css */
+.about-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.about-page {
+  flex: 1;
+  background: linear-gradient(135deg, #001f3f, #004080);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.about-content {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.about-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.section {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.section h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.section p,
+.section ul {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.circle-list {
+  list-style-type: circle;
+  padding-left: 20px;
+}
+
+.about-footer {
+  background: #002244;
+  color: #ccc;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.about-footer a {
+  color: #ffdc00;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.about-footer a:hover {
+  text-decoration: underline;
+}

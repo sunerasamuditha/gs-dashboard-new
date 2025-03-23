@@ -1,0 +1,47 @@
+/*frontend\gsdashboard\src\components\OceanWaves.css */
+
+.ocean-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url('/images/wavy-water.png') repeat-x;
+  background-size: 50% 100%;
+  opacity: 0.6;
+  animation: waveAnimation 20s linear infinite;
+}
+
+.wave1 {
+  top: 0%;
+  animation-delay: 0s;
+  opacity: 0.6;
+  filter: hue-rotate(180deg);
+}
+
+.wave2 {
+  top: 10%;
+  animation-delay: -3s;
+  opacity: 0.4;
+  filter: hue-rotate(200deg);
+}
+
+.wave3 {
+  top: 15%;
+  animation-delay: -6s;
+  opacity: 0.3;
+  filter: hue-rotate(220deg);
+}
+
+@keyframes waveAnimation {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

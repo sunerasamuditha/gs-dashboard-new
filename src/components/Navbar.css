@@ -1,0 +1,43 @@
+.navbar {
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  opacity: 0.9;
+}
+
+.navbar-visible {
+  transform: translateY(0);
+  z-index: 10;
+}
+
+.navbar-hidden {
+  transform: translateY(-100%);
+}
+
+.logo {
+  height: 45px;  /* Adjust height to make the logo bigger */
+  max-height: 40px;  /* Optional: ensures logo doesn't grow too large */
+  left: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+  vertical-align: middle;  /* Ensures the logo aligns correctly with the navbar */
+}
+
+.theme-toggle-btn {
+  margin-right: 10px;
+}
+
+.theme-toggle-btn:hover {
+  background-color: #64ffda !important;
+  color: black !important;
+  border-color: #64ffda !important;
+}
+
+.nav-link:hover {
+  color: #64ffda !important;
+}
+
+.ms-auto {
+  margin-right: 20px;
+  font-size: 18px;
+}
