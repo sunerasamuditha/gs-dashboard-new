@@ -19,7 +19,10 @@
     "recharts": "^2.15.1",
     "three": "^0.173.0",
     "three-mesh-bvh": "^0.8.0",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.38",
+    "autoprefixer": "^10.4.16"
   },
   "scripts": {
     "start": "react-scripts start",
