@@ -25,6 +25,7 @@
     "autoprefixer": "^10.4.16"
   },
   "scripts": {
+    "postinstall": "npm audit fix",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
