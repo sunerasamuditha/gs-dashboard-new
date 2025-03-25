@@ -6,7 +6,6 @@ import MapSection from './pages/MapSection';
 import About from './pages/About';
 import useDistrictData from './useDistrictData';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const { districtData, loading, error } = useDistrictData();
@@ -94,7 +93,7 @@ function App() {
           Selected District: {selectedDistrict['Districts']}
         </div>
       )}
-       <Analytics />
+      
     </div>
   );
 }
