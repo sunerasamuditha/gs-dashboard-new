@@ -94,6 +94,7 @@ function App() {
           Selected District: {selectedDistrict['Districts']}
         </div>
       )}
+       <Analytics />
     </div>
   );
 }
