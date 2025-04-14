@@ -11,20 +11,20 @@ function About() {
           
           <div className="section">
             <h3>Pillar Head</h3>
-            <p>Harindu Damsara Hettiarachchi</p>
+            <p>Binura Senevirathna</p>
           </div>
           
           <div className="section">
             <h3>Dept. Pillar Head</h3>
-            <p>Govindu Sasanka</p>
+            <p>Savithi Hansadi</p>
           </div>
           
           <div className="section">
             <h3>National Coordinators</h3>
             <ul className="circle-list">
-              <li>Kaveesha Kapuruge</li>
-              <li>Lahiruni Erandi</li>
-              <li>Sunera Samuditha</li>
+              <li>Sumudu Wijebandara</li>
+              <li>Suween Hansaja</li>
+              <li>Savidya </li>
             </ul>
           </div>
           
