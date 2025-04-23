@@ -24,7 +24,7 @@ function About() {
             <ul className="circle-list">
               <li>Sumudu Wijebandara</li>
               <li>Suween Hansaja</li>
-              <li>Savidya </li>
+              <li>Savidya Wijesinghe</li>
             </ul>
           </div>
           
