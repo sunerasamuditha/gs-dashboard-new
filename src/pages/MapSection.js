@@ -1,3 +1,4 @@
+//src\pages\MapSection.js
 import React, { useState } from 'react';
 import SriLankaMapThree from '../components/SriLankaMapThree';
 import DistrictDetailPanel from '../components/DistrictDetailPanel';

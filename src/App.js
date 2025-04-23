@@ -1,3 +1,4 @@
+//src\App.js
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
