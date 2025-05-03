@@ -1,4 +1,3 @@
-//src\pages\MapSection.js
 import React, { useState } from 'react';
 import SriLankaMapThree from '../components/SriLankaMapThree';
 import DistrictDetailPanel from '../components/DistrictDetailPanel';
@@ -15,12 +14,13 @@ function MapSection() {
   const [currentInstance, setCurrentInstance] = useState('overall');
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [hoveredDistrict, setHoveredDistrict] = useState(null);
+  
 
   const instanceData = data[currentInstance];
   const districtData = instanceData.districtData;
   const nationalStats = instanceData.nationalStats;
 
-  // Use instance-specific keys for cumulative and within-week metrics
+  
   const labelMetric =
     currentInstance === 'overall'
       ? 'Total Seminar Count - Cumulative'

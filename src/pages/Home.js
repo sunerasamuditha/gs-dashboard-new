@@ -1,10 +1,9 @@
-//src\pages\Home.js
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import './Home.css';
 
 function Home() {
-  // Array of slides with mixed content types
+  
   const slides = [
     { type: 'image', src: '/images/slide1.jpg', caption: 'Welcome to Ganitha Saviya' },
     { type: 'text', content: 'About Sasnaka Sansada - We are a charitable social service organization initiated with the intention of building a just and equitable society with a high level of human morality. We deliver our projects with the core of enabling human beings with optimum intellectual, social and spiritual balance. You are welcome to join our hands of rebuilding a nation with belief and intellect.' },
@@ -16,10 +15,10 @@ function Home() {
     { type: 'text', content: 'Our Latest Statistics - Scroll down to the statistics dashboard or visit our Legacy Dashboard' },
   ];
 
-  // State to manage the active slide index
+  
   const [index, setIndex] = useState(0);
 
-  // Handler for manual slide selection
+  
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
@@ -27,32 +26,34 @@ function Home() {
   return (
     <section id="home" className="home-section">
       <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        className="slideshow-container"
-        interval={4000} // Autoplay every 4 seconds
-      >
-        {slides.map((slide, idx) => (
-          <Carousel.Item key={idx}>
-            {slide.type === 'image' ? (
-              <>
-                <img
-                  className="d-block w-100 slide-image"
-                  src={slide.src}
-                  alt={slide.caption}
-                />
-                <Carousel.Caption>
-                  <h3>{slide.caption}</h3>
-                </Carousel.Caption>
-              </>
-            ) : (
-              <div className="slide-text">
-                <h2>{slide.content}</h2>
-              </div>
-            )}
-          </Carousel.Item>
-        ))}
-      </Carousel>
+  activeIndex={index}
+  onSelect={handleSelect}
+  className="slideshow-container"
+  interval={4000}
+  controls={true}       
+  indicators={true}
+>
+  {slides.map((slide, idx) => (
+    <Carousel.Item key={idx}>
+      {slide.type === 'image' ? (
+        <>
+          <img
+            className="d-block w-100"
+            src={slide.src}
+            alt={slide.caption}
+          />
+          <Carousel.Caption>
+            <h3>{slide.caption}</h3>
+          </Carousel.Caption>
+        </>
+      ) : (
+        <div className="slide-text">
+          <h2>{slide.content}</h2>
+        </div>
+      )}
+    </Carousel.Item>
+  ))}
+</Carousel>
       <div className="scroll-down">
           <a href="#map" className="btn-scroll">
             Go To Statistics

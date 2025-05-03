@@ -2,6 +2,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 //import DistrictChart from './DistrictChart';
+import './DistrictDetailPanel.css'; 
+// import { useState } from 'react';
 
 const panelVariants = {
   hidden: { opacity: 0, x: 100 },
@@ -15,12 +17,12 @@ const DistrictDetailPanel = ({ districtData, onClose }) => {
     <motion.div
   className="district-detail-panel"
   style={{ 
-    position: 'fixed',
+    position: 'absolute',
     top: '10%',
     right: '20px',
     transform: 'translateY(-50%)',
     width: '425px',
-    background: 'rgba(255, 255, 255, 0.15)', /* Glass effect */
+    background: 'rgba(255, 255, 255, 0.15)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
     borderRadius: '16px',
@@ -33,7 +35,7 @@ const DistrictDetailPanel = ({ districtData, onClose }) => {
   initial="hidden"
   animate="visible"
   exit="exit"
-  transition={{ duration: 1 }}
+  transition={{ duration: 0.6 }}
 >
   <button 
     onClick={onClose} 

@@ -15,12 +15,12 @@ const DistrictDetailPanelPaper = ({ districtData, onClose }) => {
     <motion.div
   className="district-detail-panel"
   style={{
-    position: 'fixed',
+    position: 'absolute',
     top: '10%',
     right: '20px',
     transform: 'translateY(-50%)',
     width: '425px',
-    background: 'rgba(255, 255, 255, 0.15)', /* Glass effect */
+    background: 'rgba(255, 255, 255, 0.15)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
     borderRadius: '16px',
@@ -41,7 +41,7 @@ const DistrictDetailPanelPaper = ({ districtData, onClose }) => {
       marginBottom: '1rem', 
       padding: '0.5rem 1rem', 
       cursor: 'pointer', 
-      background: '#0098da', /* Glass effect */
+      background: '#0098da', 
       border: '1px solid rgba(255, 255, 255, 0.3)',
       borderRadius: '8px',
       color: 'white',

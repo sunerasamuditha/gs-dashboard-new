@@ -15,7 +15,7 @@ const DistrictDetailPanelRTP = ({ districtData, onClose }) => {
     <motion.div
   className="district-detail-panel"
   style={{
-    position: 'fixed',
+    position: 'absolute',
     top: '10%',
     right: '20px',
     transform: 'translateY(-50%)',

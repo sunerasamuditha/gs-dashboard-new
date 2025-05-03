@@ -1,10 +1,87 @@
-/*src\components\SriLankaMapThree.css*/
 .label {
-    color: rgb(48, 225, 248);
-    font-size: 17px;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 50%;
-    pointer-events: none;
-    font-weight: 500;
+  color: rgb(48, 225, 248);
+  font-size: 17px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  font-weight: 500;
+  }
+
+  .zoom-buttons {
+  position: relative;
+  top: -10rem;
+  right: -80rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+  }
+  
+  .zoom-buttons button {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 152, 218, 0.7);
+  color: white;
+  border: 2px solid rgba(240, 248, 255, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  }
+  
+  .zoom-buttons button:hover {
+  background: rgba(100, 255, 218, 0.8);
+  color: black;
+  transform: scale(1.05);
+  }
+
+  @media (max-width: 600px) {
+  .zoom-buttons {
+    position: absolute;
+    top: auto;
+    bottom: 670px;
+    right: auto;
+    left: 95%;
+    transform: translateX(-50%);
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .zoom-buttons button {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+  }
+
+  @media (max-width: 380px) {
+  .zoom-buttons {
+    position: absolute;
+    top: auto;
+    bottom: 450px;
+    right: auto;
+    left: 95%;
+    transform: translateX(-50%);
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .zoom-buttons button {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
   }

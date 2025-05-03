@@ -1,4 +1,3 @@
-//src\components\SriLankaMapThree.js
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -20,6 +19,9 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
   const selectedMeshRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
   const labelsRef = useRef({});
+  const minDistance = 20;
+  const maxDistance = 80;
+  const zoomStep    = 5;
 
   // Initialization effect - runs on mount and when dependencies change
   useEffect(() => {
@@ -53,12 +55,18 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     camera.position.set(0, 30, 30);
     cameraRef.current = camera;
 
+    if (window.innerWidth <= 600) {
+      // For mobile devices, adjust the camera position to be closer
+      camera.position.set(0, 42, 42); // Adjust these values as needed
+      // You might also want to adjust minDistance and maxDistance for mobile
+    }
+
     // Add lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight.position.set(30, 50, 30);
+    directionalLight.position.set(30, 50, -30);
     directionalLight.castShadow = true;
     scene.add(directionalLight);
 
@@ -123,6 +131,9 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
       const labels = {};
 model.traverse((child) => {
   if (child.isMesh) {
+
+    if (child.name === "1") return;
+
     const districtName = child.name.replace(/(\.\d+)+$/, '').trim();
     if (districtName) {
       const labelDiv = document.createElement('div');
@@ -151,7 +162,7 @@ labelsRef.current = labels;
     // Set up orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = true;
-    controls.enableZoom = true;
+    controls.enableZoom = false;
     controls.enableRotate = true;
     controls.autoRotate = false;
     controlsRef.current = controls;
@@ -175,13 +186,23 @@ labelsRef.current = labels;
     };
     renderer.domElement.addEventListener('pointermove', onPointerMove);
 
+    renderer.domElement.addEventListener('touchstart', (event) => {
+      if (event.touches.length === 1) {
+        // Convert touch to pointer coordinates
+        const rect = renderer.domElement.getBoundingClientRect();
+        pointer.current.x = ((event.touches[0].clientX - rect.left) / rect.width) * 2 - 1;
+        pointer.current.y = -((event.touches[0].clientY - rect.top) / rect.height) * 2 + 1;
+        onPointerClick(event.touches[0]);
+      }
+    });
+
     // Handle pointer click
     const onPointerClick = (event) => {
       raycaster.current.setFromCamera(pointer.current, camera);
       const intersects = raycaster.current.intersectObjects(scene.children, true);
       if (intersects.length > 0) {
         const clickedMesh = intersects[0].object;
-        if (!clickedMesh.userData.baseColor) return;
+        if (clickedMesh.name === "1" || !clickedMesh.userData.baseColor) return;
         const districtName = clickedMesh.name.replace(/(\.\d+)+$/, '').trim();
         if (selectedMeshRef.current !== clickedMesh) {
           if (selectedMeshRef.current) {
@@ -218,6 +239,9 @@ labelsRef.current = labels;
       // Handle hover logic
       if (intersects.length > 0) {
         const mesh = intersects[0].object;
+
+        if (mesh.name === "1") return;
+
         const districtName = mesh.name.replace(/(\.\d+)+$/, '').trim();
         if (hoverTimeoutRef.current) {
           clearTimeout(hoverTimeoutRef.current);
@@ -263,6 +287,46 @@ labelsRef.current = labels;
     };
   }, [onDistrictClick, onDistrictHover, colorMetric, labelMetric, districtMap]);
 
+  // -- Zoom buttons handlers (relative to controls.target) --
+const zoomIn = () => {
+  const camera  = cameraRef.current;
+  const controls = controlsRef.current;
+  const target  = controls.target;
+
+  // direction from camera to target
+  const dir = new THREE.Vector3().copy(target)
+    .sub(camera.position)
+    .normalize();
+
+  // current distance
+  const dist = camera.position.distanceTo(target);
+  // clamp to [minDistance, maxDistance]
+  const newDist = Math.max(minDistance, dist - zoomStep);
+  const actualStep = dist - newDist;
+
+  camera.position.addScaledVector(dir, actualStep);
+  controls.update();
+};
+
+const zoomOut = () => {
+  const camera  = cameraRef.current;
+  const controls = controlsRef.current;
+  const target  = controls.target;
+
+  // direction from target to camera
+  const dir = new THREE.Vector3().copy(camera.position)
+    .sub(target)
+    .normalize();
+
+  const dist = camera.position.distanceTo(target);
+  const newDist = Math.min(maxDistance, dist + zoomStep);
+  const actualStep = newDist - dist;
+
+  camera.position.addScaledVector(dir, actualStep);
+  controls.update();
+};
+
+
   // Update effect - updates mesh colors and labels when districtMap or metrics change
   useEffect(() => {
     if (loadedModelRef.current) {
@@ -303,7 +367,19 @@ labelsRef.current = labels;
     }
   }, [districtMap, labelMetric, colorMetric]);
 
-  return <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {/* 3D canvas */}
+      <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />
+  
+      {/* zoom controls */}
+      <div className="zoom-buttons">
+        <button onClick={zoomIn}>＋</button>
+        <button onClick={zoomOut}>－</button>
+      </div>
+    </div>
+  );
+  
 }
 
 export default SriLankaMapThree;
