@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef,useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -22,6 +22,7 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
   const minDistance = 20;
   const maxDistance = 80;
   const zoomStep    = 5;
+  const [orbitControlsEnabled, setOrbitControlsEnabled] = useState(window.innerWidth > 768); // Default: disabled for mobile
 
   // Initialization effect - runs on mount and when dependencies change
   useEffect(() => {
@@ -58,6 +59,18 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     if (window.innerWidth <= 600) {
       // For mobile devices, adjust the camera position to be closer
       camera.position.set(0, 42, 42); // Adjust these values as needed
+      // You might also want to adjust minDistance and maxDistance for mobile
+    }
+
+    if (window.innerWidth <= 768 && window.innerWidth > 601) {
+      // For mobile devices, adjust the camera position to be closer
+      camera.position.set(0, 35, 35); // Adjust these values as needed
+      // You might also want to adjust minDistance and maxDistance for mobile
+    }
+
+    if (window.innerWidth <= 393) {
+      // For mobile devices, adjust the camera position to be closer
+      camera.position.set(0, 46, 46); // Adjust these values as needed
       // You might also want to adjust minDistance and maxDistance for mobile
     }
 
@@ -163,7 +176,7 @@ labelsRef.current = labels;
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = true;
     controls.enableZoom = false;
-    controls.enableRotate = true;
+    controls.enableRotate = orbitControlsEnabled; // Enable/disable based on state
     controls.autoRotate = false;
     controlsRef.current = controls;
 
@@ -285,7 +298,17 @@ labelsRef.current = labels;
         clearTimeout(hoverTimeoutRef.current);
       }
     };
-  }, [onDistrictClick, onDistrictHover, colorMetric, labelMetric, districtMap]);
+  }, [onDistrictClick, onDistrictHover, colorMetric, labelMetric, districtMap, orbitControlsEnabled]);
+
+  // Toggle orbit controls
+  const toggleOrbitControls = () => {
+    const controls = controlsRef.current;
+    setOrbitControlsEnabled((prev) => {
+      const newState = !prev;
+      controls.enableRotate = newState;
+      return newState;
+    });
+  };
 
   // -- Zoom buttons handlers (relative to controls.target) --
 const zoomIn = () => {
@@ -374,8 +397,13 @@ const zoomOut = () => {
   
       {/* zoom controls */}
       <div className="zoom-buttons">
-        <button onClick={zoomIn}>＋</button>
-        <button onClick={zoomOut}>－</button>
+      <button className="rotate" onClick={toggleOrbitControls}>
+          {orbitControlsEnabled ? 'Disable Map Rotation' : 'Enable Map Rotation'}
+        </button>
+        <div>
+          <button className='zoom' onClick={zoomIn}>＋</button>
+          <button className='zoom' onClick={zoomOut}>－</button>
+        </div>
       </div>
     </div>
   );

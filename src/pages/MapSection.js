@@ -102,6 +102,9 @@ function MapSection() {
   return (
     <section id="map" className="map-section">
       <OceanWaves />
+
+
+
       <div className="instance-selector">
         <button onClick={() => setCurrentInstance('overall')}>Overall</button>
         <button onClick={() => setCurrentInstance('remedialTeaching')}>
