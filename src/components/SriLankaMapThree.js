@@ -306,6 +306,13 @@ labelsRef.current = labels;
     setOrbitControlsEnabled((prev) => {
       const newState = !prev;
       controls.enableRotate = newState;
+
+      // Enable or disable pointer-events for scrolling
+      const container = containerRef.current;
+      if (container) {
+        container.style.pointerEvents = newState ? 'auto' : 'none';
+      }
+
       return newState;
     });
   };

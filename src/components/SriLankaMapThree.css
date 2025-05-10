@@ -120,4 +120,12 @@
     }
   }
 
+  .map-container {
+    touch-action: pan-y; /* Allow vertical scrolling */
+  }
+  
+  .map-container[style*="pointer-events: none"] {
+    touch-action: auto; /* Ensure scrolling works when pointer-events is disabled */
+  }
+
    
