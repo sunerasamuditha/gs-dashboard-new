@@ -348,7 +348,7 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
       <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />
       <div className="zoom-buttons">
         <button className="rotate" onClick={toggleOrbitControls}>
-          {orbitControlsEnabled ? 'Disable Map Rotation' : 'Enable Map Rotation'}
+          {orbitControlsEnabled ? 'Disable Map' : 'Enable Map'}
         </button>
         <div>
           <button className="zoom" onClick={zoomIn}>＋</button>
