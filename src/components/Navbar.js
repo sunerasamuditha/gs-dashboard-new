@@ -35,7 +35,7 @@ function CustomNavbar({ theme, toggleTheme }) {
           <Nav.Link href="#home" style={{ color: 'black', fontWeight:500 }}>Home</Nav.Link>
           <Nav.Link href="#map" style={{ color: 'black', fontWeight:500 }}>Map</Nav.Link>
           <Nav.Link href="#about" style={{ color: 'black', fontWeight:500 }}>About</Nav.Link>
-          <Nav.Link href="https://docs.google.com/spreadsheets/d/1jnPdM23eEXtY9uPWHwj8fOHAmCVg2I0LCta9kyYPBlo/edit?gid=1265241927#gid=1265241927" style={{ color: 'black', fontWeight:500 }}>Legacy Dashboard</Nav.Link>
+          <Nav.Link href="https://docs.google.com/spreadsheets/d/1ibD6_zCrzmDk4Wt3wbpVyy6msr2hJjZVzDdw_fPv8pQ/edit?resourcekey=&gid=1265241927#gid=1265241927" style={{ color: 'black', fontWeight:500 }}>Legacy Dashboard</Nav.Link>
           
 
         </Nav>
