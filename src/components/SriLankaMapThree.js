@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -21,16 +21,19 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
   const labelsRef = useRef({});
   const minDistance = 20;
   const maxDistance = 80;
-  const zoomStep    = 5;
-  const [orbitControlsEnabled, setOrbitControlsEnabled] = useState(window.innerWidth > 768); // Default: disabled for mobile
+  const zoomStep = 5;
+  // Default: disabled for mobile (<=768px)
+  const [orbitControlsEnabled, setOrbitControlsEnabled] = useState(() => window.innerWidth > 768);
 
-  // Initialization effect - runs on mount and when dependencies change
   useEffect(() => {
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
 
-    // Set up WebGL renderer
+    // Set pointer-events to allow page scroll or map interaction
+    container.style.pointerEvents = orbitControlsEnabled ? 'auto' : 'none';
+
+    // WebGL renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setSize(width, height);
@@ -38,52 +41,41 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Set up CSS2D renderer for labels
+    // CSS2D renderer for labels
     const cssRenderer = new CSS2DRenderer();
     cssRenderer.setSize(width, height);
     cssRenderer.domElement.style.position = 'absolute';
     cssRenderer.domElement.style.top = '0px';
-    cssRenderer.domElement.style.pointerEvents = 'none'; // Allow mouse events to pass through
+    cssRenderer.domElement.style.pointerEvents = 'none';
     container.appendChild(cssRenderer.domElement);
     cssRendererRef.current = cssRenderer;
 
-    // Set up scene
+    // Scene
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // Set up camera
+    // Camera
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.set(0, 30, 30);
     cameraRef.current = camera;
 
-    if (window.innerWidth <= 600) {
-      // For mobile devices, adjust the camera position to be closer
-      camera.position.set(0, 42, 42); // Adjust these values as needed
-      // You might also want to adjust minDistance and maxDistance for mobile
-    }
-
-    if (window.innerWidth <= 768 && window.innerWidth > 601) {
-      // For mobile devices, adjust the camera position to be closer
-      camera.position.set(0, 35, 35); // Adjust these values as needed
-      // You might also want to adjust minDistance and maxDistance for mobile
-    }
-
+    // Adjust camera for various mobile sizes
     if (window.innerWidth <= 393) {
-      // For mobile devices, adjust the camera position to be closer
-      camera.position.set(0, 46, 46); // Adjust these values as needed
-      // You might also want to adjust minDistance and maxDistance for mobile
+      camera.position.set(0, 46, 46);
+    } else if (window.innerWidth <= 600) {
+      camera.position.set(0, 42, 42);
+    } else if (window.innerWidth <= 768) {
+      camera.position.set(0, 35, 35);
     }
 
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambientLight);
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(30, 50, -30);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight.position.set(30, 50, -30);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
-
-    // Define label offsets for all 25 districts
+    // Label offsets for all districts
     const labelOffsets = {
       'Colombo': { x: -7.5, y: 0, z: 10 },
       'Gampaha': { x: -7, y: 0, z: 7.5 },
@@ -112,7 +104,7 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
       'Kegalle': { x: -3.5, y: 0, z: 8 }
     };
 
-    // Load the 3D model
+    // Load GLB model
     const loader = new GLTFLoader();
     loader.load('/srilanka_map.glb', (gltf) => {
       const model = gltf.scene;
@@ -120,12 +112,11 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
       scene.add(model);
       loadedModelRef.current = model;
 
-      // Initialize mesh colors and positions
       model.traverse((child) => {
         if (child.isMesh) {
           child.userData.originalPosition = child.position.clone();
-          const districtName = child.name.replace(/(\.\d+)+$/, '').trim();
-          const data = districtMap[districtName];
+          const dName = child.name.replace(/(\.\d+)+$/, '').trim();
+          const data = districtMap[dName];
           let baseColor;
           if (data) {
             const metricValue = Number(data[colorMetric]) || 0;
@@ -140,138 +131,122 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
         }
       });
 
-      // Create labels for each district
+      // Create labels
       const labels = {};
-model.traverse((child) => {
-  if (child.isMesh) {
-
-    if (child.name === "1") return;
-
-    const districtName = child.name.replace(/(\.\d+)+$/, '').trim();
-    if (districtName) {
-      const labelDiv = document.createElement('div');
-      labelDiv.className = 'label';
-
-      // Fetch initial value from districtMap if available
-      const initialData = districtMap[districtName];
-      const initialValue = initialData ? Number(initialData[labelMetric]) || '0' : '0';
-      
-      labelDiv.textContent = initialValue; // Set initial value dynamically
-
-      const label = new CSS2DObject(labelDiv);
-      const box = new THREE.Box3().setFromObject(child);
-      const center = box.getCenter(new THREE.Vector3());
-      const maxY = box.max.y;
-      const offset = labelOffsets[districtName] || { x: 0, y: 0, z: 0 };
-      label.position.set(center.x + offset.x, maxY + 1 + offset.y, center.z + offset.z);
-      scene.add(label);
-      labels[districtName] = label;
-    }
-  }
-});
-labelsRef.current = labels;
+      model.traverse((child) => {
+        if (!child.isMesh || child.name === '1') return;
+        const dName = child.name.replace(/(\.\d+)+$/, '').trim();
+        if (!dName) return;
+        const div = document.createElement('div');
+        div.className = 'label';
+        const initVal = districtMap[dName] ? Number(districtMap[dName][labelMetric]) : 0;
+        div.textContent = initVal.toString();
+        const label = new CSS2DObject(div);
+        const box = new THREE.Box3().setFromObject(child);
+        const center = box.getCenter(new THREE.Vector3());
+        const maxY = box.max.y;
+        const offset = labelOffsets[dName] || { x: 0, y: 0, z: 0 };
+        label.position.set(center.x + offset.x, maxY + 1 + offset.y, center.z + offset.z);
+        scene.add(label);
+        labels[dName] = label;
+      });
+      labelsRef.current = labels;
     });
 
-    // Set up orbit controls
+    // Orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = true;
     controls.enableZoom = false;
-    controls.enableRotate = orbitControlsEnabled; // Enable/disable based on state
+    controls.enableRotate = orbitControlsEnabled;
     controls.autoRotate = false;
     controlsRef.current = controls;
 
-    // Handle window resize
-    const handleResize = () => {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      camera.aspect = width / height;
+    // Resize handler
+    const onResize = () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-      cssRenderer.setSize(width, height);
+      renderer.setSize(w, h);
+      cssRenderer.setSize(w, h);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', onResize);
 
-    // Handle pointer movement
-    const onPointerMove = (event) => {
+    // Pointer move
+    const onPointerMove = (e) => {
       const rect = renderer.domElement.getBoundingClientRect();
-      pointer.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      pointer.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      pointer.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.current.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     };
     renderer.domElement.addEventListener('pointermove', onPointerMove);
 
-    renderer.domElement.addEventListener('touchstart', (event) => {
-      if (event.touches.length === 1) {
-        // Convert touch to pointer coordinates
+    // Touch -> click mapping
+    renderer.domElement.addEventListener('touchstart', (evt) => {
+      if (evt.touches.length === 1) {
+        const touch = evt.touches[0];
         const rect = renderer.domElement.getBoundingClientRect();
-        pointer.current.x = ((event.touches[0].clientX - rect.left) / rect.width) * 2 - 1;
-        pointer.current.y = -((event.touches[0].clientY - rect.top) / rect.height) * 2 + 1;
-        onPointerClick(event.touches[0]);
+        pointer.current.x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+        pointer.current.y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+        onPointerClick(touch);
       }
     });
 
-    // Handle pointer click
+    // Pointer click
     const onPointerClick = (event) => {
       raycaster.current.setFromCamera(pointer.current, camera);
-      const intersects = raycaster.current.intersectObjects(scene.children, true);
-      if (intersects.length > 0) {
-        const clickedMesh = intersects[0].object;
-        if (clickedMesh.name === "1" || !clickedMesh.userData.baseColor) return;
-        const districtName = clickedMesh.name.replace(/(\.\d+)+$/, '').trim();
-        if (selectedMeshRef.current !== clickedMesh) {
+      const hits = raycaster.current.intersectObjects(scene.children, true);
+      if (hits.length > 0) {
+        const mesh = hits[0].object;
+        if (mesh.name === '1' || !mesh.userData.baseColor) return;
+        const dName = mesh.name.replace(/(\.\d+)+$/, '').trim();
+        if (selectedMeshRef.current !== mesh) {
           if (selectedMeshRef.current) {
             selectedMeshRef.current.material.color.copy(selectedMeshRef.current.userData.baseColor);
             selectedMeshRef.current.position.copy(selectedMeshRef.current.userData.originalPosition);
           }
-          selectedMeshRef.current = clickedMesh;
-          clickedMesh.material.color.set('#64ffda');
-          clickedMesh.position.y = clickedMesh.userData.originalPosition.y + 0.1;
-          if (onDistrictClick) onDistrictClick(districtName);
+          selectedMeshRef.current = mesh;
+          mesh.material.color.set('#64ffda');
+          mesh.position.y = mesh.userData.originalPosition.y + 0.1;
+          onDistrictClick?.(dName);
         } else {
-          clickedMesh.material.color.copy(clickedMesh.userData.baseColor);
-          clickedMesh.position.copy(clickedMesh.userData.originalPosition);
+          mesh.material.color.copy(mesh.userData.baseColor);
+          mesh.position.copy(mesh.userData.originalPosition);
           selectedMeshRef.current = null;
-          if (onDistrictClick) onDistrictClick(null);
+          onDistrictClick?.(null);
         }
       } else {
         if (selectedMeshRef.current) {
           selectedMeshRef.current.material.color.copy(selectedMeshRef.current.userData.baseColor);
           selectedMeshRef.current.position.copy(selectedMeshRef.current.userData.originalPosition);
           selectedMeshRef.current = null;
-          if (onDistrictClick) onDistrictClick(null);
+          onDistrictClick?.(null);
         }
       }
     };
-    renderer.domElement.addEventListener('pointerdown', onPointerClick);
+    renderer.domElement.addEventListener
+    ('pointerdown', onPointerClick);
 
-    // Animation loop
+    // Animation
     const animate = () => {
       requestAnimationFrame(animate);
       raycaster.current.setFromCamera(pointer.current, camera);
-      const intersects = raycaster.current.intersectObjects(scene.children, true);
-
-      // Handle hover logic
-      if (intersects.length > 0) {
-        const mesh = intersects[0].object;
-
-        if (mesh.name === "1") return;
-
-        const districtName = mesh.name.replace(/(\.\d+)+$/, '').trim();
-        if (hoverTimeoutRef.current) {
+      const hits = raycaster.current.intersectObjects(scene.children, true);
+      if (hits.length > 0) {
+        const mesh = hits[0].object;
+        if (mesh.name !== '1') {
+          const dName = mesh.name.replace(/(\.\d+)+$/, '').trim();
           clearTimeout(hoverTimeoutRef.current);
+          if (dName !== hoveredMeshName.current) {
+            hoveredMeshName.current = dName;
+            onDistrictHover?.(dName);
+          }
+        }
+      } else if (!hoverTimeoutRef.current && hoveredMeshName.current) {
+        hoverTimeoutRef.current = setTimeout(() => {
+          hoveredMeshName.current = null;
+          onDistrictHover?.(null);
           hoverTimeoutRef.current = null;
-        }
-        if (districtName !== hoveredMeshName.current) {
-          hoveredMeshName.current = districtName;
-          if (onDistrictHover) onDistrictHover(districtName);
-        }
-      } else {
-        if (!hoverTimeoutRef.current && hoveredMeshName.current !== null) {
-          hoverTimeoutRef.current = setTimeout(() => {
-            hoveredMeshName.current = null;
-            if (onDistrictHover) onDistrictHover(null);
-            hoverTimeoutRef.current = null;
-          }, 200);
-        }
+        }, 200);
       }
 
       controls.update();
@@ -280,46 +255,36 @@ labelsRef.current = labels;
     };
     animate();
 
-    // Cleanup function
+    // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', onResize);
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
       renderer.domElement.removeEventListener('pointerdown', onPointerClick);
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      if (cssRendererRef.current && container.contains(cssRendererRef.current.domElement)) {
-        container.removeChild(cssRendererRef.current.domElement);
-      }
+      if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+      if (cssRenderer.domElement && container.contains(cssRenderer.domElement)) container.removeChild(cssRenderer.domElement);
       renderer.dispose();
       scene.clear();
       controls.dispose();
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
+      clearTimeout(hoverTimeoutRef.current);
     };
   }, [onDistrictClick, onDistrictHover, colorMetric, labelMetric, districtMap, orbitControlsEnabled]);
 
-  // Toggle orbit controls
+  // Toggle orbit controls on button click
   const toggleOrbitControls = () => {
     const controls = controlsRef.current;
     setOrbitControlsEnabled((prev) => {
-      const newState = !prev;
-      controls.enableRotate = newState;
-
-      // Enable or disable pointer-events for scrolling
+      const enabled = !prev;
+      controls.enableRotate = enabled;
+      // Toggle pointer-events to allow map interaction
       const container = containerRef.current;
-      if (container) {
-        container.style.pointerEvents = newState ? 'auto' : 'none';
-      }
-
-      return newState;
+      if (container) container.style.pointerEvents = enabled ? 'auto' : 'none';
+      return enabled;
     });
   };
 
-  // -- Zoom buttons handlers (relative to controls.target) --
-const zoomIn = () => {
-  const camera  = cameraRef.current;
+  // Zoom handlers
+  const zoomIn = () => {
+    const camera  = cameraRef.current;
   const controls = controlsRef.current;
   const target  = controls.target;
 
@@ -336,10 +301,9 @@ const zoomIn = () => {
 
   camera.position.addScaledVector(dir, actualStep);
   controls.update();
-};
-
-const zoomOut = () => {
-  const camera  = cameraRef.current;
+  };
+  const zoomOut = () => {
+    const camera  = cameraRef.current;
   const controls = controlsRef.current;
   const target  = controls.target;
 
@@ -354,67 +318,45 @@ const zoomOut = () => {
 
   camera.position.addScaledVector(dir, actualStep);
   controls.update();
-};
+  };
 
-
-  // Update effect - updates mesh colors and labels when districtMap or metrics change
+  // Update effect for metrics and labels
   useEffect(() => {
     if (loadedModelRef.current) {
       loadedModelRef.current.traverse((child) => {
         if (child.isMesh) {
-          const districtName = child.name.replace(/(\.\d+)+$/, '').trim();
-          const data = districtMap[districtName];
-          let baseColor;
-          if (data) {
-            const metricValue = Number(data[colorMetric]) || 0;
-            baseColor = new THREE.Color(metricValue > 0 ? 'skyblue' : 'gray');
-          } else {
-            baseColor = new THREE.Color('white');
-          }
-          child.userData.baseColor = baseColor.clone();
+          const dName = child.name.replace(/(\.\d+)+$/, '').trim();
+          const data = districtMap[dName];
+          const value = data ? Number(data[colorMetric]) : 0;
+          const color = new THREE.Color(value > 0 ? 'skyblue' : 'gray');
+          child.userData.baseColor = color.clone();
           if (selectedMeshRef.current !== child) {
-            child.material.color.copy(baseColor);
+            child.material.color.copy(color);
           }
         }
       });
     }
-
-    // Update label text when districtMap or labelMetric changes
-    if (labelsRef.current) {
-      Object.entries(labelsRef.current).forEach(([districtName, label]) => {
-        const data = districtMap[districtName];
-        if (data) {
-          // Convert to number explicitly
-        const rawValue = data[labelMetric];
-        const cumulativeCount = Number(rawValue);
-        label.element.textContent = cumulativeCount ? cumulativeCount : '0';
-        console.log(`District: ${districtName}, raw cumulative: ${rawValue}, converted: ${cumulativeCount}`);
-          
-        } else {
-          label.element.textContent = '0';
-        }
-      });
-    }
+    Object.entries(labelsRef.current).forEach(([dName, label]) => {
+      const raw = districtMap[dName]?.[labelMetric];
+      const num = Number(raw);
+      label.element.textContent = num ? num.toString() : '0';
+    });
   }, [districtMap, labelMetric, colorMetric]);
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* 3D canvas */}
       <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />
-  
-      {/* zoom controls */}
       <div className="zoom-buttons">
-      <button className="rotate" onClick={toggleOrbitControls}>
+        <button className="rotate" onClick={toggleOrbitControls}>
           {orbitControlsEnabled ? 'Disable Map Rotation' : 'Enable Map Rotation'}
         </button>
         <div>
-          <button className='zoom' onClick={zoomIn}>＋</button>
-          <button className='zoom' onClick={zoomOut}>－</button>
+          <button className="zoom" onClick={zoomIn}>＋</button>
+          <button className="zoom" onClick={zoomOut}>－</button>
         </div>
       </div>
     </div>
   );
-  
 }
 
 export default SriLankaMapThree;
