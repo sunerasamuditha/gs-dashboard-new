@@ -59,8 +59,16 @@ function Home() {
             Go To Statistics
           </a>
         </div>
+
+        {/* Add a wrapper div to ensure proper display */}
+<div className="instruction-container" style={{width: '100%', textAlign: 'center', marginTop: '1rem'}}>
+  <div className="mobile-scroll-instruction">Use a Laptop or a Desktop for the Best Experience</div>
+</div> 
+
     </section>
+    
   );
+  
 }
 
 export default Home;

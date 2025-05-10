@@ -111,3 +111,28 @@
     font-size: 0.8rem !important;
   }
 }
+
+.mobile-scroll-instruction {
+  display: none;
+  position: static !important; /* Changed to static for mobile view */
+  margin-top: 1rem; /* Small margin below the Go To Statistics button */
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 90%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .mobile-scroll-instruction {
+    display: block !important; /* Added !important to ensure display */
+    padding-bottom: 10px;
+    visibility: visible !important; /* Ensure visibility */
+  }
+}
