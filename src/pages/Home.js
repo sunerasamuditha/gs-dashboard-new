@@ -61,7 +61,7 @@ function Home() {
         </div>
 
         {/* Add a wrapper div to ensure proper display */}
-<div className="instruction-container" style={{width: '100%', textAlign: 'center', marginTop: '1rem'}}>
+<div className="instruction-container" style={{width: '100%', textAlign: 'center', marginTop: '1rem' , fontWeight: 500}}>
   <div className="mobile-scroll-instruction">Use a Laptop or a Desktop for the Best Experience</div>
 </div> 
 
