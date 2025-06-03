@@ -16,13 +16,13 @@ const NationalStats = ({ nationalStats, instance }) => {
   let title = '';
   switch (instance) {
     case 'overall':
-      title = 'Ganitha Saviya 2024/25 Total Seminar Program Summary';
+      title = 'Ganitha Saviya 2025/26 Total Seminar Program Summary';
       break;
     case 'remedialTeaching':
-      title = 'Ganitha Saviya 2024/25 Total Remedial Teaching Program Summary';
+      title = 'Ganitha Saviya 2025/26 Total Remedial Teaching Program Summary';
       break;
     case 'paperSeminars':
-      title = 'Ganitha Saviya 2024/25 Total Paper Seminar Program Summary';
+      title = 'Ganitha Saviya 2025/26 Total Paper Seminar Program Summary';
       break;
     default:
       title = 'Ganitha Saviya Statistics';
