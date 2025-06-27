@@ -1,71 +1,102 @@
 # GS-Dashboard 🇱🇰
 
-Welcome to the GS-Dashboard, a stunning and interactive web application for visualizing data about Sri Lanka. Dive into a beautiful 3D map of the island, explore detailed district-level statistics, and gain insights through dynamic charts and visualizations. This project is built to be a modern, responsive, and user-friendly platform for data exploration.
+\<p align="center"\>
+\<img src="./images/collage.jpg" alt="Project Screenshot" width="800"/\>
+\</p\>
 
-![Project Screenshot](./images/collage.jpg)
+\<p align="center"\>
+\<strong\>A stunning and interactive web application for visualizing data about Sri Lanka.\</strong\>
+\<br /\>
+Dive into a beautiful 3D map of the island, explore detailed district-level statistics, and gain insights through dynamic charts and visualizations.
+\<br /\>
+\<br /\>
+\<a href="[https://github.com/your\_username/gs-dashboard-new/issues](https://www.google.com/search?q=https://github.com/your_username/gs-dashboard-new/issues)"\>Report Bug\</a\>
+·
+\<a href="[https://github.com/your\_username/gs-dashboard-new/issues](https://www.google.com/search?q=https://github.com/your_username/gs-dashboard-new/issues)"\>Request Feature\</a\>
+\</p\>
+
+\<p align="center"\>
+\<img src="[https://img.shields.io/badge/license-MIT-blue.svg](https://www.google.com/search?q=https://img.shields.io/badge/license-MIT-blue.svg)" alt="License"\>
+\<img src="[https://img.shields.io/badge/react-](https://www.google.com/search?q=https://img.shields.io/badge/react-)^18.2.0-blue" alt="React"\>
+\<img src="[https://img.shields.io/badge/three.js-](https://www.google.com/search?q=https://img.shields.io/badge/three.js-)^0.150.0-orange" alt="Three.js"\>
+\<img src="[https://img.shields.io/badge/chart.js-](https://www.google.com/search?q=https://img.shields.io/badge/chart.js-)^4.2.0-red" alt="Chart.js"\>
+\<img src="[https://img.shields.io/badge/bootstrap-](https://www.google.com/search?q=https://img.shields.io/badge/bootstrap-)^5.2.3-purple" alt="Bootstrap"\>
+\</p\>
+
+Welcome to the GS-Dashboard, a modern, responsive, and user-friendly platform for data exploration in Sri Lanka.
+
+-----
 
 ## ✨ Features
 
-- **Interactive 3D Map:** A high-fidelity 3D model of Sri Lanka, built with React Three Fiber.
-- **Detailed Data Visualization:** In-depth charts and panels for district-level data using Chart.js and Recharts.
-- **National Statistics:** Get a bird's-eye view of the entire country's data.
-- **Responsive Design:** A seamless experience across all devices.
-- **Modern UI/UX:** Beautifully designed components with smooth animations using Framer Motion.
+  - **Interactive 3D Map:** A high-fidelity 3D model of Sri Lanka, built with React Three Fiber, providing an immersive experience.
+  - **Detailed Data Visualization:** In-depth charts and panels for district-level data using Chart.js and Recharts to bring statistics to life.
+  - **National Statistics:** Get a bird's-eye view of the entire country's data for a comprehensive understanding.
+  - **Responsive Design:** A seamless and intuitive experience across all devices, from mobile phones to desktops.
+  - **Modern UI/UX:** Beautifully designed components with smooth, fluid animations powered by Framer Motion.
+
+-----
 
 ## 🛠️ Tech Stack
 
-This project is built with a modern and powerful tech stack:
+This project is built with a modern and powerful tech stack to deliver a high-performance, visually stunning application.
 
-- **Frontend:** [React](https://reactjs.org/), [React Router](https://reactrouter.com/)
-- **3D Rendering:** [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), [@react-three/drei](https://github.com/pmndrs/drei)
-- **Charting:** [Chart.js](https://www.chartjs.org/), [Recharts](https://recharts.org/en-US/)
-- **Styling:** [Bootstrap](https://getbootstrap.com/), [React-Bootstrap](https://react-bootstrap.github.io/), CSS3
-- **Animation:** [Framer Motion](https://www.framer.com/motion/)
+| Category          | Technologies                                                                                                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend** | [React](https://reactjs.org/), [React Router](https://reactrouter.com/)                                                                                                                                    |
+| **3D Rendering** | [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), [@react-three/drei](https://github.com/pmndrs/drei)                              |
+| **Charting** | [Chart.js](https://www.chartjs.org/), [Recharts](https://recharts.org/en-US/)                                                                                                                            |
+| **Styling** | [Bootstrap](https://getbootstrap.com/), [React-Bootstrap](https://react-bootstrap.github.io/), CSS3                                                                                                      |
+| **Animation** | [Framer Motion](https://www.framer.com/motion/)                                                                                                                                                         |
 
-## About the Project
+-----
 
-The GS-Dashboard is a React application that provides an interactive way to explore data about Sri Lanka. It uses `react-three-fiber` and `drei` to render a 3D model of the country, and `chart.js` and `recharts` to display statistical data. The application is designed to be responsive and user-friendly.
+## 🚀 Getting Started
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-You need to have Node.js and npm installed on your machine. You can download them from [https://nodejs.org/](https://nodejs.org/).
+Ensure you have Node.js and npm installed on your machine. You can download them from [https://nodejs.org/](https://nodejs.org/).
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/your_username/gs-dashboard-new.git
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your_username/gs-dashboard-new.git
+    ```
+2.  **Navigate to the project directory:**
+    ```sh
+    cd gs-dashboard-new
+    ```
+3.  **Install NPM packages:**
+    ```sh
+    npm install
+    ```
 
 ### Usage
 
-To run the app in the development mode, use:
+  * **To run the app in development mode:**
 
-```sh
-npm start
-```
+    ```sh
+    npm start
+    ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits.
+    Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) to view it in your browser. The page will automatically reload when you make changes.
 
-To build the app for production, use:
+  * **To build the app for production:**
 
-```sh
-npm run build
-```
+    ```sh
+    npm run build
+    ```
 
-This will build the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
+    This command bundles React in production mode and optimizes the build for the best performance. The output will be in the `build` folder.
 
-## Folder Structure
+-----
 
-The project has the following folder structure:
+## 📂 Project Structure
+
+The project follows a modular and organized folder structure to ensure maintainability and scalability.
 
 ```
 gs-dashboard-new/
@@ -74,10 +105,24 @@ gs-dashboard-new/
 │   └── ...
 ├── src/
 │   ├── components/
+│   │   ├── DistrictChart.js
+│   │   ├── DistrictDetailPanel.js
+│   │   ├── DistrictMap.js
+│   │   ├── NationalStats.js
+│   │   ├── Navbar.js
+│   │   ├── OceanWaves.js
+│   │   ├── SriLankaMap.js
+│   │   └── SummaryChart.js
 │   ├── hooks/
+│   │   ├── useResponsive.js
+│   │   └── useDistrictData.js
 │   ├── images/
 │   ├── pages/
+│   │   ├── About.js
+│   │   ├── Home.js
+│   │   └── MapSection.js
 │   ├── utils/
+│   │   └── responsive.js
 │   ├── App.js
 │   ├── index.js
 │   └── ...
@@ -85,91 +130,52 @@ gs-dashboard-new/
 └── README.md
 ```
 
-- **`public/`**: Contains the public assets and the `index.html` file.
-- **`src/`**: Contains the main source code of the application.
-  - **`components/`**: Contains the reusable React components.
-  - **`hooks/`**: Contains custom React hooks.
-  - **`images/`**: Contains the images used in the application.
-  - **`pages/`**: Contains the main pages of the application.
-  - **`utils/`**: Contains utility functions.
-- **`package.json`**: Contains the project's metadata and dependencies.
-- **`README.md`**: This file.
+### Key Directories
 
-## Components
+  - **`public/`**: Contains public assets and the main `index.html` file.
+  - **`src/`**: The heart of the application, containing all the source code.
+      - **`components/`**: Reusable React components that form the building blocks of the UI.
+      - **`hooks/`**: Custom React hooks for managing state and side effects.
+      - **`pages/`**: The main pages of the application.
+      - **`utils/`**: Utility functions that can be used across the application.
 
-The `src/components/` directory contains the following components:
+-----
 
-- **`DistrictChart.js`**: A chart component to display district-specific data.
-- **`DistrictDetailPanel.js`**: A panel to show detailed information about a selected district.
-- **`DistrictMap.js`**: The main component for the 3D map of Sri Lanka.
-- **`NationalStats.js`**: A component to display national-level statistics.
-- **`Navbar.js`**: The navigation bar of the application.
-- **`OceanWaves.js`**: A component to render animated ocean waves around the map.
-- **`SriLankaMap.js`**: The 3D model of Sri Lanka.
-- **`SummaryChart.js`**: A chart component to display a summary of the data.
+\#\#📜 Available Scripts
 
-## Pages
+In the project directory, you can run the following scripts:
 
-The `src/pages/` directory contains the following pages:
+  - `npm start`: Runs the app in development mode.
+  - `npm run build`: Builds the app for production.
+  - `npm test`: Launches the test runner in interactive watch mode.
+  - `npm run eject`: Removes the single dependency from your project (Note: this is a one-way operation).
 
-- **`About.js`**: The about page of the application.
-- **`Home.js`**: The home page of the application.
-- **`MapSection.js`**: The section of the home page that contains the map and related components.
+-----
 
-## Hooks
+\#\#🤝 Contributing
 
-The `src/hooks/` directory contains the following custom hooks:
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-- **`useResponsive.js`**: A hook to handle responsive design.
-- **`useDistrictData.js`**: A hook to fetch and manage district data.
+To contribute:
 
-## Utils
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-The `src/utils/` directory contains the following utility functions:
+We appreciate your support in making this project even better\!
 
-- **`responsive.js`**: Utility functions for responsive design.
+-----
 
-## Available Scripts
+## 📄 License
 
-In the project directory, you can run:
+This project is distributed under the MIT License. See the `LICENSE` file for more information.
 
-- **`npm start`**: Runs the app in the development mode.
-- **`npm run build`**: Builds the app for production.
-- **`npm test`**: Launches the test runner in the interactive watch mode.
-- **`npm run eject`**: Removes the single dependency from your project.
+-----
 
-## Dependencies
+## 📧 Contact
 
-The project uses the following main dependencies:
+Your Name - your\_email@example.com
 
-- **`@react-three/drei`**: A collection of useful helpers and abstractions for `react-three-fiber`.
-- **`@react-three/fiber`**: A React renderer for Three.js.
-- **`bootstrap`**: A popular CSS framework.
-- **`chart.js`**: A flexible JavaScript charting library.
-- **`framer-motion`**: A library for creating animations.
-- **`react`**: A JavaScript library for building user interfaces.
-- **`react-bootstrap`**: Bootstrap components built with React.
-- **`react-chartjs-2`**: React components for Chart.js.
-- **`react-router-dom`**: Declarative routing for React.
-- **`recharts`**: A composable charting library built on React components.
-- **`three`**: A JavaScript 3D library.
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Contact
-
-Your Name - your_email@example.com
-
-Project Link: [https://github.com/your_username/gs-dashboard-new](https://github.com/your_username/gs-dashboard-new)
+Project Link: [https://github.com/your\_username/gs-dashboard-new](https://github.com/your_username/gs-dashboard-new)
