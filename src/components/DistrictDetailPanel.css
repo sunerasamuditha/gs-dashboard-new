@@ -1,74 +1,93 @@
+/* District Detail Panel - Mobile First */
 .district-detail-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 400px;
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.district-detail-panel h2 {
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+.district-detail-panel p,
+.district-detail-panel li {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.district-detail-panel ul {
+  padding-left: 1rem;
+}
+
+.district-detail-panel .close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.district-detail-panel .close-button:hover {
+  background: rgba(255, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .district-detail-panel {
     position: fixed;
     top: 10%;
-    right: 20px;
-    width: 425px;
-    max-width: 90vw;
+    right: 2rem;
+    left: auto;
+    transform: none;
+    width: 400px;
+    max-width: 25vw;
     max-height: 80vh;
-    overflow-y: auto;
-    z-index: 1000;
+    padding: 1.5rem;
   }
   
-  @media (max-width: 768px) {
-    .district-detail-panel {
-      position: fixed;
-      top: 37% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 90vw !important;
-      max-height: 80vh;
-      margin: 0;
-      border-radius: 12px;
-      padding: 12px 15px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      z-index: 2000;
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-  
-    .district-detail-panel h2 {
-      font-size: 2rem !important;
-    }
-    
-    .district-detail-panel p,
-    .district-detail-panel li {
-      font-size: 1.05rem !important;
-    }
+  .district-detail-panel h2 {
+    font-size: 1.8rem;
   }
   
-  @media (max-width: 380px) {
-    .district-detail-panel {
-      position: fixed;
-      top: 37% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: 90vw !important;
-      max-height: 60vh;
-      margin: 0;
-      border-radius: 12px;
-      padding: 10px 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      z-index: 2000;
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-  
-    .district-detail-panel h2 {
-      font-size: 1.2rem !important;
-    }
-    
-    .district-detail-panel p,
-    .district-detail-panel li {
-      font-size: 0.8rem !important;
-    }
+  .district-detail-panel p,
+  .district-detail-panel li {
+    font-size: 1rem;
   }
-  
-  .district-detail-panel .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #333;
+}
+
+/* Large desktop screens */
+@media (min-width: 1440px) {
+  .district-detail-panel {
+    width: 450px;
+    max-width: 20vw;
+    right: 3rem;
   }
-  
+}

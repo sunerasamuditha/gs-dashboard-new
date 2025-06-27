@@ -6,11 +6,13 @@ import DistrictDetailPanelPaper from '../components/DistrictDetailPanelPaper';
 import SummaryChart from '../components/SummaryChart';
 import OceanWaves from '../components/OceanWaves';
 import useDistrictData from '../useDistrictData';
+import useResponsive from '../hooks/useResponsive';
 import NationalStats from '../components/NationalStats';
 import './MapSection.css';
 
 function MapSection() {
   const { data, loading, error } = useDistrictData();
+  const { device, isMobile, isTablet, isDesktop } = useResponsive();
   const [currentInstance, setCurrentInstance] = useState('overall');
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [hoveredDistrict, setHoveredDistrict] = useState(null);

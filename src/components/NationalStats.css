@@ -1,63 +1,94 @@
+/* National Stats Container - Mobile First */
 .national-stats-container {
-  padding: 20px;
+  padding: clamp(12px, 3vw, 20px);
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 1px 32px rgba(31, 38, 135, 0.37);
+  box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+  width: 100%;
+  overflow-x: auto;
 }
 
 .national-stats-title {
-  background: rgba(0, 0, 102, 0.8); 
+  background: rgba(0, 0, 102, 0.8);
   color: #fff;
-  padding: 10px;
+  padding: clamp(8px, 2vw, 12px);
   text-align: center;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  margin-bottom: clamp(8px, 2vw, 12px);
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-weight: 600;
 }
 
 .national-stats-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  min-width: 280px;
 }
 
 .national-stats-table thead tr {
-  background: rgba(153, 204, 255, 0.5); 
+  background: rgba(153, 204, 255, 0.6);
 }
 
 .national-stats-table th {
-  padding: clamp(6px, 2vw, 12px);
-  border: 1px solid rgb(255, 255, 255);
+  padding: clamp(4px, 1.5vw, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   text-align: center;
   font-weight: 600;
   font-style: italic;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .national-stats-table td {
-  padding: clamp(6px, 2vw, 12px);
-  border: 1px solid rgb(255, 255, 255);
+  padding: clamp(4px, 1.5vw, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   text-align: center;
   font-weight: 600;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  white-space: nowrap;
 }
 
 .national-stats-table tbody tr:nth-child(even) {
-  background: rgba(242, 242, 242, 0.3);
+  background: rgba(242, 242, 242, 0.4);
 }
 
-.map-bar-chart {
-  width: 41%;
-  min-width: 320px;
-  height: 400px;
-  /* ... */
+.national-stats-table tbody tr:hover {
+  background: rgba(153, 204, 255, 0.3);
 }
 
-@media (max-width: 1024px) {
-  .map-bar-chart {
-    width: 98vw !important;
-    height: 240px !important;
-    min-width: 0;
-    padding: 8px !important;
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .national-stats-container {
+    padding: 20px;
+  }
+
+  .national-stats-title {
+    padding: 12px;
+    font-size: 1.2rem;
+  }
+
+  .national-stats-table {
+    font-size: 1rem;
+  }
+
+  .national-stats-table th,
+  .national-stats-table td {
+    padding: 10px 12px;
+    font-size: 1rem;
+  }
+}
+
+/* Desktop screens */
+@media (min-width: 1024px) {
+  .national-stats-table th,
+  .national-stats-table td {
+    padding: 12px 16px;
+    font-size: 1.1rem;
   }
 }
