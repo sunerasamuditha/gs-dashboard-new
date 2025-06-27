@@ -3,12 +3,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
-import useResponsive from '../hooks/useResponsive';
-import { getMapConfig } from '../utils/responsive';
 import './SriLankaMapThree.css';
 
 function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, colorMetric, labelMetric }) {
-  const { device, isMobile, isTablet, isDesktop } = useResponsive();
   const containerRef = useRef();
   const rendererRef = useRef();
   const cssRendererRef = useRef();
@@ -25,20 +22,13 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
   const minDistance = 20;
   const maxDistance = 80;
   const zoomStep = 5;
-  
-  // Responsive controls: disabled for mobile, enabled for larger screens
-  const [orbitControlsEnabled, setOrbitControlsEnabled] = useState(() => !isMobile);
-  
-  // Responsive configuration
-  const getResponsiveConfig = () => {
-    return getMapConfig(window.innerWidth);
-  };
+  // Default: disabled for mobile (<=768px)
+  const [orbitControlsEnabled, setOrbitControlsEnabled] = useState(() => window.innerWidth > 768);
 
   useEffect(() => {
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
-    const config = getResponsiveConfig();
 
     // Set pointer-events to allow page scroll or map interaction
     container.style.pointerEvents = orbitControlsEnabled ? 'auto' : 'none';
@@ -64,12 +54,19 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // Camera with responsive configuration
-    const camera = new THREE.PerspectiveCamera(config.camera.fov, width / height, 0.1, 1000);
-    const distance = config.camera.distance;
-    const angleY = Math.PI / 6; // 30 degrees
-    camera.position.set(0, distance * Math.sin(angleY), distance * Math.cos(angleY));
+    // Camera
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    camera.position.set(0, 30, 30);
     cameraRef.current = camera;
+
+    // Adjust camera for various mobile sizes
+    if (window.innerWidth <= 393) {
+      camera.position.set(0, 46, 46);
+    } else if (window.innerWidth <= 600) {
+      camera.position.set(0, 42, 42);
+    } else if (window.innerWidth <= 768) {
+      camera.position.set(0, 35, 35);
+    }
 
     // Lighting
     scene.add(new THREE.AmbientLight(0xffffff, 0.7));
@@ -111,7 +108,7 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     const loader = new GLTFLoader();
     loader.load('/srilanka_map.glb', (gltf) => {
       const model = gltf.scene;
-      model.scale.set(config.modelScale, config.modelScale, config.modelScale);
+      model.scale.set(36, 36, 36);
       scene.add(model);
       loadedModelRef.current = model;
 
@@ -144,7 +141,6 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
         div.className = 'label';
         const initVal = districtMap[dName] ? Number(districtMap[dName][labelMetric]) : 0;
         div.textContent = initVal.toString();
-        div.style.fontSize = `${config.labelScale}rem`;
         const label = new CSS2DObject(div);
         const box = new THREE.Box3().setFromObject(child);
         const center = box.getCenter(new THREE.Vector3());
@@ -161,7 +157,7 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = true;
     controls.enableZoom = false;
-    controls.enableRotate = config.controls.enabled && orbitControlsEnabled;
+    controls.enableRotate = orbitControlsEnabled;
     controls.autoRotate = false;
     controlsRef.current = controls;
 
@@ -169,31 +165,10 @@ function SriLankaMapThree({ districtMap, onDistrictHover, onDistrictClick, color
     const onResize = () => {
       const w = container.clientWidth;
       const h = container.clientHeight;
-      const newConfig = getResponsiveConfig();
-      
       camera.aspect = w / h;
-      camera.fov = newConfig.camera.fov;
       camera.updateProjectionMatrix();
-      
       renderer.setSize(w, h);
       cssRenderer.setSize(w, h);
-      
-      // Update controls based on new configuration
-      if (controlsRef.current) {
-        controlsRef.current.enableRotate = newConfig.controls.enabled && orbitControlsEnabled;
-      }
-      
-      // Update model scale
-      if (loadedModelRef.current) {
-        loadedModelRef.current.scale.set(newConfig.modelScale, newConfig.modelScale, newConfig.modelScale);
-      }
-      
-      // Update label scales
-      Object.values(labelsRef.current).forEach(label => {
-        if (label.element) {
-          label.element.style.fontSize = `${newConfig.labelScale}rem`;
-        }
-      });
     };
     window.addEventListener('resize', onResize);
 

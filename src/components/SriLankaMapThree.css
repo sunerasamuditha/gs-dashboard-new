@@ -1,31 +1,27 @@
-/* Label styles - Mobile First */
 .label {
   color: rgb(48, 225, 248);
-  font-size: clamp(12px, 3vw, 17px);
+  font-size: 17px;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 4px 8px;
+  padding: 5px 10px;
   border-radius: 50%;
   pointer-events: none;
   font-weight: 500;
-  white-space: nowrap;
-  user-select: none;
-}
+  }
 
-/* Zoom buttons container - Mobile First */
-.zoom-buttons {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  .zoom-buttons {
+  position: relative;
+  top: -10rem;
+  right: -80rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-direction: row;
+  gap: 0.3rem;
   z-index: 1000;
-}
-
-.zoom-buttons button {
+  }
+  
+  .zoom-buttons button {
   width: 40px;
   height: 40px;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   display: flex;
   justify-content: center;
@@ -35,73 +31,72 @@
   border: 2px solid rgba(240, 248, 255, 0.6);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(4px);
-  touch-action: manipulation;
-}
+  }
 
-.zoom-buttons .rotate {
-  font-size: 11px !important;
-  width: 70px !important;
-  height: 50px !important;
-  order: -1;
-  margin-bottom: 0.5rem;
-}
+  .zoom-buttons .rotate {
+    margin-right: 0.5rem;
+    font-size: 14px !important;
+    width: 80px !important;
+    height: 60px !important;
+    top: 10% !important;
+    left: 50% !important;
+    align-self: flex-start !important;
+    order: 3;
 
-.zoom-buttons button:hover,
-.zoom-buttons button:active {
+  }
+  
+  .zoom-buttons button:hover {
   background: rgba(100, 255, 218, 0.8);
   color: black;
   transform: scale(1.05);
-}
+  }
 
-.zoom-buttons button:active {
-  transform: scale(0.95);
-}
-
-/* Tablet and larger screens */
-@media (min-width: 768px) {
+  @media (max-width: 600px) {
   .zoom-buttons {
-    bottom: 2rem;
-    right: 2rem;
+    position: absolute;
+    top: auto;
+    bottom: 630px;
+    right: auto;
+    left: 105%;
+    transform: translateX(-50%);
     flex-direction: row;
-    gap: 1rem;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 10px;
   }
-
+  
   .zoom-buttons button {
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
   }
 
-  .zoom-buttons .rotate {
-    font-size: 14px !important;
-    width: 90px !important;
-    height: 60px !important;
-    margin-bottom: 0;
-    margin-right: 1rem;
-  }
-}
-
-/* Desktop screens */
-@media (min-width: 1024px) {
+  @media (max-width: 390px) {
   .zoom-buttons {
-    bottom: 4rem;
-    right: 4rem;
+    position: absolute;
+    top: 170px;
+    bottom: 450px;
+    right: auto;
+    left: 105%;
+    transform: translateX(-50%);
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.3rem;
+    width: 100%;
+    margin-top: 10px;
   }
-
+  
   .zoom-buttons button {
-    width: 50px;
-    height: 50px;
-    font-size: 28px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
   }
-
-  .zoom-buttons .rotate {
-    width: 100px !important;
-    height: 65px !important;
   }
-}
 
   @media (max-width: 1024px) and (min-width: 601px) {
     .zoom-buttons {
