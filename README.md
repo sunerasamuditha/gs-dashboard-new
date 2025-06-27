@@ -1,7 +1,7 @@
-# GS-Dashboard 🇱🇰
+# GS-Dashboard Front-End 🇱🇰
 
 <p align="center">
-<img src="./images/collage.jpg" alt="Project Screenshot" width="800"/>
+<img src="./images/Screenshot.png" alt="Project Screenshot" width="800"/>
 </p>
 
 <p align="center">
@@ -10,9 +10,9 @@
 Dive into a beautiful 3D map of the island, explore detailed district-level statistics, and gain insights through dynamic charts and visualizations.
 <br />
 <br />
-<a href="https://github.com/your_username/gs-dashboard-new/issues">Report Bug</a>
+<a href="https://forms.gle/UrcaqM5TKdjByMaVA">Report Bug</a>
 ·
-<a href="https://github.com/your_username/gs-dashboard-new/issues">Request Feature</a>
+<a href="https://forms.gle/UrcaqM5TKdjByMaVA">Request Feature</a>
 </p>
 
 <p align="center">
@@ -176,6 +176,6 @@ This project is distributed under the MIT License. See the `LICENSE` file for mo
 
 ## 📧 Contact
 
-Your Name - your\_email@example.com
+Your Name - sunerasamuditha\_sunerasandasiri@gmail.com
 
-Project Link: [https://github.com/your\_username/gs-dashboard-new](https://github.com/your_username/gs-dashboard-new)
+Project Link: [https://github.com/sunerasamuditha/gs-dashboard-new](https://github.com/sunerasamuditha/gs-dashboard-new)
