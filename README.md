@@ -1,27 +1,27 @@
 # GS-Dashboard 🇱🇰
 
-\<p align="center"\>
-\<img src="./images/collage.jpg" alt="Project Screenshot" width="800"/\>
-\</p\>
+<p align="center">
+<img src="./images/collage.jpg" alt="Project Screenshot" width="800"/>
+</p>
 
-\<p align="center"\>
-\<strong\>A stunning and interactive web application for visualizing data about Sri Lanka.\</strong\>
-\<br /\>
+<p align="center">
+<strong>A stunning and interactive web application for visualizing data about Sri Lanka.</strong>
+<br />
 Dive into a beautiful 3D map of the island, explore detailed district-level statistics, and gain insights through dynamic charts and visualizations.
-\<br /\>
-\<br /\>
-\<a href="[https://github.com/your\_username/gs-dashboard-new/issues](https://www.google.com/search?q=https://github.com/your_username/gs-dashboard-new/issues)"\>Report Bug\</a\>
+<br />
+<br />
+<a href="https://github.com/your_username/gs-dashboard-new/issues">Report Bug</a>
 ·
-\<a href="[https://github.com/your\_username/gs-dashboard-new/issues](https://www.google.com/search?q=https://github.com/your_username/gs-dashboard-new/issues)"\>Request Feature\</a\>
-\</p\>
+<a href="https://github.com/your_username/gs-dashboard-new/issues">Request Feature</a>
+</p>
 
-\<p align="center"\>
-\<img src="[https://img.shields.io/badge/license-MIT-blue.svg](https://www.google.com/search?q=https://img.shields.io/badge/license-MIT-blue.svg)" alt="License"\>
-\<img src="[https://img.shields.io/badge/react-](https://www.google.com/search?q=https://img.shields.io/badge/react-)^18.2.0-blue" alt="React"\>
-\<img src="[https://img.shields.io/badge/three.js-](https://www.google.com/search?q=https://img.shields.io/badge/three.js-)^0.150.0-orange" alt="Three.js"\>
-\<img src="[https://img.shields.io/badge/chart.js-](https://www.google.com/search?q=https://img.shields.io/badge/chart.js-)^4.2.0-red" alt="Chart.js"\>
-\<img src="[https://img.shields.io/badge/bootstrap-](https://www.google.com/search?q=https://img.shields.io/badge/bootstrap-)^5.2.3-purple" alt="Bootstrap"\>
-\</p\>
+<p align="center">
+<img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+<img src="https://img.shields.io/badge/react-^18.2.0-blue" alt="React">
+<img src="https://img.shields.io/badge/three.js-^0.173.0-orange" alt="Three.js">
+<img src="https://img.shields.io/badge/chart.js-^4.4.7-red" alt="Chart.js">
+<img src="https://img.shields.io/badge/bootstrap-^5.3.3-purple" alt="Bootstrap">
+</p>
 
 Welcome to the GS-Dashboard, a modern, responsive, and user-friendly platform for data exploration in Sri Lanka.
 
@@ -82,7 +82,7 @@ Ensure you have Node.js and npm installed on your machine. You can download them
     npm start
     ```
 
-    Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) to view it in your browser. The page will automatically reload when you make changes.
+    Open [http://localhost:3000](http://localhost:3000) to view it in your browser. The page will automatically reload when you make changes.
 
   * **To build the app for production:**
 
@@ -141,7 +141,7 @@ gs-dashboard-new/
 
 -----
 
-\#\#📜 Available Scripts
+## 📜 Available Scripts
 
 In the project directory, you can run the following scripts:
 
@@ -152,7 +152,7 @@ In the project directory, you can run the following scripts:
 
 -----
 
-\#\#🤝 Contributing
+## 🤝 Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
