@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Badge } from 'react-bootstrap';
-import { Bar } from 'react-chartjs-2';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
+import {
+  Container,
+  Table,
+  Badge,
+  Tabs,
+  Tab,
+  Button,
+  ButtonGroup,
+} from 'react-bootstrap';
+import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,6 +34,11 @@ const AIInsights = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [districtView, setDistrictView] = useState('top10');
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [activeTab, setActiveTab] = useState('forecast');
+  const [showAllInsights, setShowAllInsights] = useState(false);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     fetch('https://raw.githubusercontent.com/sunerasamuditha/gs_pipeline/main/dashboard_data.json')
@@ -45,296 +58,414 @@ const AIInsights = () => {
       });
   }, []);
 
-  if (loading) return (
-    <section className="ai-insights-section d-flex justify-content-center align-items-center">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    </section>
+  const districtBreakdown = useMemo(() => data?.district_breakdown || {}, [data]);
+  const resourceForecast = useMemo(() => data?.ai_resource_forecast || {}, [data]);
+  const volunteerRisks = useMemo(
+    () => (Array.isArray(data?.ai_volunteer_risks) ? data.ai_volunteer_risks : []),
+    [data]
+  );
+  const demandPredictions = useMemo(
+    () => (Array.isArray(data?.ai_demand_predictions) ? data.ai_demand_predictions : []),
+    [data]
   );
 
-  if (error) return (
-    <section className="ai-insights-section d-flex justify-content-center align-items-center">
-      <div className="text-danger">Error loading AI Insights: {error}</div>
-    </section>
+  const stats = useMemo(() => {
+    const districtCount = Object.keys(districtBreakdown).length;
+    const volunteerRiskCount = volunteerRisks.length;
+    return {
+      districtCount,
+      volunteerRiskCount,
+    };
+  }, [districtBreakdown, volunteerRisks]);
+
+  const sortedDistricts = useMemo(() => {
+    return Object.entries(districtBreakdown).sort(([, a], [, b]) => b - a);
+  }, [districtBreakdown]);
+
+  const chartRows = useMemo(() => {
+    const rows = districtView === 'top10' ? sortedDistricts.slice(0, 10) : sortedDistricts;
+    return {
+      labels: rows.map(([k]) => k),
+      values: rows.map(([, v]) => v),
+    };
+  }, [sortedDistricts, districtView]);
+
+  const chartData = useMemo(() => {
+    const bg = chartRows.labels.map((label) =>
+      selectedDistrict && label === selectedDistrict
+        ? 'rgba(100, 255, 218, 0.85)'
+        : 'rgba(0, 152, 218, 0.55)'
+    );
+    const border = chartRows.labels.map((label) =>
+      selectedDistrict && label === selectedDistrict
+        ? 'rgba(100, 255, 218, 1)'
+        : 'rgba(0, 152, 218, 1)'
+    );
+
+    return {
+      labels: chartRows.labels,
+      datasets: [
+        {
+          label: 'Seminars',
+          data: chartRows.values,
+          backgroundColor: bg,
+          borderColor: border,
+          borderWidth: 1,
+          borderRadius: 6,
+          hoverBackgroundColor: 'rgba(100, 255, 218, 0.75)',
+        },
+      ],
+    };
+  }, [chartRows, selectedDistrict]);
+
+  const chartOptions = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'District Breakdown (Seminars)',
+          color: '#334155',
+          font: {
+            size: 14,
+            weight: '600'
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(30, 41, 59, 0.9)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            title: (items) => items?.[0]?.label || '',
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(0, 0, 0, 0.06)',
+          },
+          ticks: {
+            color: '#64748b',
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: '#64748b',
+            autoSkip: true,
+            maxTicksLimit: districtView === 'all' ? 10 : 12,
+            maxRotation: districtView === 'all' ? 0 : 35,
+            minRotation: districtView === 'all' ? 0 : 35,
+          },
+        },
+      },
+    }),
+    [districtView]
   );
 
-  if (!data) return null;
-
-  // Prepare Chart Data
-  // Sort district breakdown by value for better visualization
-  const sortedDistricts = Object.entries(data.district_breakdown)
-    .sort(([, a], [, b]) => b - a);
-  
-  const districtLabels = sortedDistricts.map(([k]) => k);
-  const districtValues = sortedDistricts.map(([, v]) => v);
-
-  const chartData = {
-    labels: districtLabels,
-    datasets: [
-      {
-        label: 'Seminars per District',
-        data: districtValues,
-        backgroundColor: 'rgba(0, 152, 218, 0.7)',
-        borderColor: 'rgba(0, 152, 218, 1)',
-        borderWidth: 1,
-        borderRadius: 5,
-        hoverBackgroundColor: 'rgba(100, 255, 218, 0.8)',
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: 'District Breakdown (Seminars)',
-        color: '#888',
-        font: {
-          size: 16
-        }
-      },
-      tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        padding: 10,
-        cornerRadius: 8,
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: 'rgba(0, 0, 0, 0.05)',
-        },
-        ticks: {
-          color: '#888'
-        }
-      },
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          color: '#888',
-          maxRotation: 45,
-          minRotation: 45
-        }
-      }
+  const onChartClick = (event) => {
+    const elements = getElementAtEvent(chartRef.current, event);
+    if (!elements?.length) return;
+    const idx = elements[0].index;
+    const label = chartRows.labels[idx];
+    if (label) {
+      setSelectedDistrict(label);
+      setActiveTab('forecast');
     }
   };
 
-  const renderInsights = (text) => {
-    if (!text) return null;
-    const lines = text.split('\n');
-    return lines.map((line, index) => {
-      if (line.trim() === '') return <br key={index} />;
-      
-      // Check for bold pattern **...**
-      const parts = line.split(/(\*\*.*?\*\*)/g);
-      return (
-        <p key={index} className="insight-text mb-2">
-          {parts.map((part, i) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-              return <span key={i} className="insight-highlight">{part.slice(2, -2)}</span>;
-            }
-            return part;
-          })}
-        </p>
-      );
+  const selectedForecast = useMemo(() => {
+    if (!selectedDistrict) return null;
+    return resourceForecast[selectedDistrict] || null;
+  }, [selectedDistrict, resourceForecast]);
+
+  const selectedDistrictSeminars = useMemo(() => {
+    if (!selectedDistrict) return null;
+    return districtBreakdown[selectedDistrict] ?? null;
+  }, [selectedDistrict, districtBreakdown]);
+
+  const splitBold = (text) => {
+    const parts = String(text).split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <span key={i} className="insight-highlight">
+            {part.slice(2, -2)}
+          </span>
+        );
+      }
+      return <React.Fragment key={i}>{part}</React.Fragment>;
     });
   };
 
+  const insightItems = useMemo(() => {
+    const text = data?.ai_remarks_insights;
+    if (!text) return [];
+    const normalized = String(text).replace(/\r\n/g, '\n');
+    const startAt = normalized.search(/(^|\n)\s*1\./);
+    const body = startAt >= 0 ? normalized.slice(startAt) : normalized;
+    const items = body
+      .split(/\n(?=\s*\d+\.)/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((s) => s.replace(/^\s*\d+\.\s*/, '').trim());
+    return items;
+  }, [data]);
+
+  const visibleInsightItems = showAllInsights ? insightItems : insightItems.slice(0, 4);
+
+  if (loading) {
+    return (
+      <section className="ai-insights-section d-flex justify-content-center align-items-center">
+        <div className="spinner-border text-light" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="ai-insights-section d-flex justify-content-center align-items-center">
+        <div className="text-light">Error loading AI Insights: {error}</div>
+      </section>
+    );
+  }
+
+  if (!data) {
+    return (
+      <section className="ai-insights-section d-flex justify-content-center align-items-center">
+        <div className="text-light">AI Insights data is unavailable.</div>
+      </section>
+    );
+  }
+
   return (
-    <section className="ai-insights-section">
-      <Container>
-        <motion.h2 
-          className="ai-section-title"
-          initial={{ opacity: 0, y: -30 }}
+    <section className="ai-insights-section" id="ai-insights">
+      <Container fluid className="ai-insights-container">
+        <motion.div
+          className="ai-insights-shell"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
         >
-          AI Overview & Insights
-        </motion.h2>
-        
-        <Row className="mb-5 g-4">
-          <Col md={4}>
-            <motion.div 
-              className="ai-card text-center d-flex flex-column justify-content-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-            >
-              <div className="ai-stat-value">{data.total_seminars}</div>
-              <div className="ai-stat-label">Total Seminars</div>
-            </motion.div>
-          </Col>
-          <Col md={4}>
-            <motion.div 
-              className="ai-card text-center d-flex flex-column justify-content-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <div className="ai-stat-value">{data.total_students.toLocaleString()}</div>
-              <div className="ai-stat-label">Total Students</div>
-            </motion.div>
-          </Col>
-          <Col md={4}>
-            <motion.div 
-              className="ai-card text-center d-flex flex-column justify-content-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <div className="ai-stat-value" style={{ fontSize: '2rem' }}>{data.last_updated}</div>
-              <div className="ai-stat-label">Last Updated</div>
-            </motion.div>
-          </Col>
-        </Row>
-
-        <Row className="mb-5">
-          <Col xs={12}>
-            <motion.div 
-              className="ai-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div style={{ height: '400px' }}>
-                <Bar data={chartData} options={chartOptions} />
+          <div className="ai-insights-top">
+            <div className="ai-title-block">
+              <h2 className="ai-section-title">AI Overview & Insights</h2>
+              <div className="ai-subtitle">
+                <span className="ai-subtitle-label">Last updated:</span> {data.last_updated}
               </div>
-            </motion.div>
-          </Col>
-        </Row>
+            </div>
 
-        <Row className="mb-5 g-4">
-          <Col lg={6}>
-            <motion.div 
-              className="ai-card"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h4>Resource Forecast</h4>
-              <div className="table-responsive">
-                <Table hover className="mt-3 align-middle">
-                  <thead>
-                    <tr>
-                      <th>District</th>
-                      <th className="text-center">Predicted Students</th>
-                      <th className="text-center">Paper Sheets Needed</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(data.ai_resource_forecast).map(([district, info]) => (
-                      <tr key={district}>
-                        <td>{district}</td>
-                        <td className="text-center">{info.predicted_students}</td>
-                        <td className="text-center">{info.paper_sheets_needed}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
+            <div className="ai-stat-strip">
+              <div className="ai-mini-stat">
+                <div className="ai-mini-value">{Number(data.total_seminars || 0).toLocaleString()}</div>
+                <div className="ai-mini-label">Seminars</div>
               </div>
-            </motion.div>
-          </Col>
-          <Col lg={6}>
-            <motion.div 
-              className="ai-card"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h4>Demand Predictions</h4>
-              <div className="table-responsive">
-                <Table hover className="mt-3 align-middle">
-                  <thead>
-                    <tr>
-                      <th>School</th>
-                      <th className="text-end">Demand Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.ai_demand_predictions.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.school}</td>
-                        <td className="demand-score text-end">{item.demand_score}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
+              <div className="ai-mini-stat">
+                <div className="ai-mini-value">{Number(data.total_students || 0).toLocaleString()}</div>
+                <div className="ai-mini-label">Students</div>
               </div>
-            </motion.div>
-          </Col>
-        </Row>
+              <div className="ai-mini-stat">
+                <div className="ai-mini-value">{stats.volunteerRiskCount}</div>
+                <div className="ai-mini-label">High Risks</div>
+              </div>
+            </div>
+          </div>
 
-        <Row className="mb-5">
-          <Col xs={12}>
-            <motion.div 
-              className="ai-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h4>Volunteer Risks (High Churn)</h4>
-              <div className="table-responsive">
-                <Table hover className="mt-3 align-middle">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Risk Level</th>
-                      <th>Reason</th>
-                      <th>Last Active</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.ai_volunteer_risks.map((volunteer, index) => (
-                      <tr key={index}>
-                        <td>{volunteer.name}</td>
-                        <td><Badge bg="danger" className="px-3 py-2">{volunteer.risk_level}</Badge></td>
-                        <td>{volunteer.reason}</td>
-                        <td>{volunteer.last_active}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </motion.div>
-          </Col>
-        </Row>
+          <div className="ai-insights-main">
+            <div className="ai-card ai-chart-card">
+              <div className="ai-card-header">
+                <div className="ai-card-title">District Breakdown</div>
 
-        <Row>
-          <Col xs={12}>
-            <motion.div 
-              className="ai-card"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h4>AI Remarks & Insights</h4>
-              <div className="mt-4">
-                {renderInsights(data.ai_remarks_insights)}
-              </div>
-            </motion.div>
-          </Col>
-        </Row>
+                <div className="ai-card-actions">
+                  <ButtonGroup size="sm" className="ai-toggle">
+                    <Button
+                      variant={districtView === 'top10' ? 'primary' : 'outline-light'}
+                      onClick={() => setDistrictView('top10')}
+                    >
+                      Top 10
+                    </Button>
+                    <Button
+                      variant={districtView === 'all' ? 'primary' : 'outline-light'}
+                      onClick={() => setDistrictView('all')}
+                    >
+                      All
+                    </Button>
+                  </ButtonGroup>
 
+                  {selectedDistrict ? (
+                    <div className="ai-selected">
+                      <Badge bg="light" text="dark" className="ai-selected-badge">
+                        {selectedDistrict}
+                      </Badge>
+                      <Button
+                        size="sm"
+                        variant="outline-light"
+                        className="ai-clear-btn"
+                        onClick={() => setSelectedDistrict(null)}
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="ai-hint">Tap a bar to focus</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="ai-chart-area">
+                <Bar ref={chartRef} data={chartData} options={chartOptions} onClick={onChartClick} />
+              </div>
+
+              <div className="ai-selection-row">
+                <div className="ai-selection-item">
+                  <span className="ai-selection-label">Seminars:</span>{' '}
+                  <span className="ai-selection-value">
+                    {selectedDistrict ? (selectedDistrictSeminars ?? '—') : '—'}
+                  </span>
+                </div>
+                <div className="ai-selection-item">
+                  <span className="ai-selection-label">Forecast:</span>{' '}
+                  <span className="ai-selection-value">
+                    {selectedDistrict && selectedForecast
+                      ? `${selectedForecast.predicted_students} students / ${selectedForecast.paper_sheets_needed} sheets`
+                      : '—'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="ai-card ai-tabs-card">
+              <Tabs
+                activeKey={activeTab}
+                onSelect={(k) => setActiveTab(k || 'forecast')}
+                className="ai-tabs"
+                justify
+              >
+                <Tab eventKey="forecast" title="Forecast">
+                  <div className="ai-tab-body">
+                    <div className="table-responsive">
+                      <Table hover className="ai-table align-middle">
+                        <thead>
+                          <tr>
+                            <th>District</th>
+                            <th className="text-center">Pred. Students</th>
+                            <th className="text-center">Sheets</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.entries(resourceForecast).map(([district, info]) => (
+                            <tr
+                              key={district}
+                              className={`ai-forecast-row ${selectedDistrict === district ? 'ai-row-active' : ''}`}
+                              onClick={() => setSelectedDistrict(district)}
+                            >
+                              <td>{district}</td>
+                              <td className="text-center">{info.predicted_students}</td>
+                              <td className="text-center">{info.paper_sheets_needed}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </Tab>
+
+                <Tab eventKey="demand" title="Demand">
+                  <div className="ai-tab-body">
+                    <div className="table-responsive">
+                      <Table hover className="ai-table align-middle">
+                        <thead>
+                          <tr>
+                            <th>School</th>
+                            <th className="text-end">Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {demandPredictions.map((item, index) => (
+                            <tr key={index}>
+                              <td>{item.school}</td>
+                              <td className="text-end demand-score">{item.demand_score}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </Tab>
+
+                <Tab eventKey="risks" title={`Risks (${stats.volunteerRiskCount})`}>
+                  <div className="ai-tab-body">
+                    <div className="table-responsive">
+                      <Table hover className="ai-table align-middle">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Risk</th>
+                            <th>Reason</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {volunteerRisks.map((volunteer, index) => (
+                            <tr key={index}>
+                              <td>{volunteer.name}</td>
+                              <td>
+                                <Badge bg="danger" className="ai-risk-badge">
+                                  {volunteer.risk_level}
+                                </Badge>
+                              </td>
+                              <td>{volunteer.reason}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </Tab>
+
+                <Tab eventKey="insights" title="Insights">
+                  <div className="ai-tab-body">
+                    <div className="ai-insight-list">
+                      {visibleInsightItems.length === 0 ? (
+                        <div className="ai-empty">No insights available.</div>
+                      ) : (
+                        <ol className="ai-insight-ol">
+                          {visibleInsightItems.map((item, idx) => (
+                            <li key={idx} className="ai-insight-li">
+                              {splitBold(item)}
+                            </li>
+                          ))}
+                        </ol>
+                      )}
+                    </div>
+
+                    {insightItems.length > 4 && (
+                      <div className="ai-insight-actions">
+                        <Button
+                          size="sm"
+                          variant="outline-light"
+                          onClick={() => setShowAllInsights((v) => !v)}
+                        >
+                          {showAllInsights ? 'Show less' : 'Show more'}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </Tab>
+              </Tabs>
+            </div>
+          </div>
+        </motion.div>
       </Container>
     </section>
   );
