@@ -19,6 +19,7 @@ import {
   Legend,
 } from 'chart.js';
 import { motion } from 'framer-motion';
+import ReportsGenerator from '../components/ReportsGenerator';
 import './AIInsights.css';
 
 ChartJS.register(
@@ -466,6 +467,8 @@ const AIInsights = () => {
             </div>
           </div>
         </motion.div>
+        
+        <ReportsGenerator />
       </Container>
     </section>
   );

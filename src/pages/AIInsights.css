@@ -4,11 +4,11 @@
   background: linear-gradient(135deg, #001f3f, #004080); /* About section theme */
   color: #334155;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto; /* Allow scrolling */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Start from top */
 }
 
 .ai-insights-container {
