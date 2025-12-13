@@ -50,15 +50,21 @@ const ReportsGenerator = () => {
         fetch(DATA_URL)
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch data');
-                return res.json();
+                return res.text();
             })
-            .then(data => {
+            .then(text => {
+                // Replace NaN with null to make it valid JSON
+                const sanitizedText = text.replace(/:\s*NaN/g, ': null'); 
+                const data = JSON.parse(sanitizedText);
+                
                 // Clean data
                 const cleanedData = data.map(row => ({
                     ...row,
                     District: row.District ? row.District.trim() : "",
                     'Type of Seminar': row['Type of Seminar'] ? row['Type of Seminar'].trim() : "",
-                    'Name of the School ': row['Name of the School '] ? row['Name of the School '].trim() : ""
+                    'Name of the School ': row['Name of the School '] ? row['Name of the School '].trim() : "",
+                    // Ensure numeric values are numbers
+                    'Number of Students participated': Number(row['Number of Students participated']) || 0
                 }));
                 setRawData(cleanedData);
                 setFilteredData(cleanedData);
@@ -66,6 +72,7 @@ const ReportsGenerator = () => {
                 setLoading(false);
             })
             .catch(err => {
+                console.error("Error loading data:", err);
                 setError(err.message);
                 setLoading(false);
             });
