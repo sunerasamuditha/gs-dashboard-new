@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import MapSection from './pages/MapSection';
 import About from './pages/About';
+import AIInsights from './pages/AIInsights';
 import useDistrictData from './useDistrictData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -80,6 +81,7 @@ function App() {
       <div className="content">
         <Home />
         <MapSection />
+        <AIInsights />
         <About />
       </div>
       {loading && <div className="loading-indicator">Loading district data...</div>}
