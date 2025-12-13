@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import './ReportsGenerator.css';
 
 const DATA_URL = 'https://raw.githubusercontent.com/sunerasamuditha/gs_pipeline/main/reports_data.json';
@@ -207,7 +207,7 @@ const ReportsGenerator = () => {
         doc.text(filterText, 14, 35);
 
         // Table
-        doc.autoTable({
+        autoTable(doc, {
             startY: 40,
             head: [['Date', 'District', 'School', 'Type', 'Medium', 'Students', 'Volunteers']],
             body: filteredData.map(r => [
