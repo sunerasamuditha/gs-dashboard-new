@@ -209,14 +209,13 @@ const AIInsights = () => {
 
   const insightItems = useMemo(() => {
     const text = data?.ai_remarks_insights;
-    if (!text) return [];
+    if (!text) return [];    
     
-    // Split by newline to handle bullet points or numbered lists
     return String(text)
       .split(/\r?\n/)
       .map(line => line.trim())
       .filter(line => line.length > 0)
-      .map(line => line.replace(/^(\*|-|\d+\.)\s*/, '')); // Remove *, -, or 1. markers
+      .map(line => line.replace(/^(\*|-|\d+\.)\s*/, ''));
   }, [data]);
 
   const visibleInsightItems = showAllInsights ? insightItems : insightItems.slice(0, 4);

@@ -1,14 +1,14 @@
 /* src/pages/AIInsights.css */
 .ai-insights-section {
   padding: 2.5rem 1rem;
-  background: linear-gradient(135deg, #001f3f, #004080); /* About section theme */
+  background: linear-gradient(135deg, #001f3f, #004080); 
   color: #334155;
   position: relative;
-  overflow-y: auto; /* Allow scrolling */
+  overflow-y: auto; 
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Start from top */
+  justify-content: flex-start; 
 }
 
 .ai-insights-container {
@@ -19,7 +19,7 @@
 .ai-insights-shell {
   width: min(1400px, 98vw);
   margin: 0 auto;
-  background: transparent; /* Transparent shell */
+  background: transparent; 
   padding: 1.5rem;
   position: relative;
   z-index: 1;
@@ -43,7 +43,7 @@
   gap: 1.5rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Subtle light border */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
 }
 
 .ai-title-block {
@@ -57,14 +57,14 @@
   margin: 0;
   font-weight: 800;
   font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  color: #ffffff; /* White text */
+  color: #ffffff; 
   letter-spacing: -0.02em;
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .ai-subtitle {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9); /* Light text */
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
 }
 
@@ -74,7 +74,7 @@
 
 .ai-stat-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Changed to 3 columns */
+  grid-template-columns: repeat(3, minmax(100px, 1fr)); 
   gap: 1rem;
 }
 
@@ -277,13 +277,12 @@
   flex: 1;
   min-height: 0;
   display: flex;
-  flex-direction: column; /* Ensure content stacks if needed, though usually just one active pane */
+  flex-direction: column;
   background: #ffffff;
-  overflow: hidden; /* Prevent spillover */
+  overflow: hidden; 
 }
 
 .ai-tabs-card .tab-pane {
-  /* Inactive tabs are hidden by Bootstrap */
   width: 100%;
 }
 
@@ -299,20 +298,18 @@
   min-height: 0;
   overflow: auto;
   padding: 0;
-  position: relative; /* For sticky context */
+  position: relative; 
 }
 
-/* Fix for sticky headers inside Bootstrap's table-responsive */
 .ai-tab-body .table-responsive {
   overflow: visible; 
 }
 
-/* Table Styling */
 .ai-table {
   margin-bottom: 0;
   color: #334155;
   width: 100%;
-  border-collapse: separate; /* Helps with sticky borders sometimes */
+  border-collapse: separate; 
   border-spacing: 0;
 }
 
@@ -326,10 +323,10 @@
   letter-spacing: 0.5px;
   position: sticky;
   top: 0;
-  background: #ffffff; /* Match card bg for clean look */
-  z-index: 10; /* Ensure it stays on top */
+  background: #ffffff; 
+  z-index: 10; 
   padding: 0.75rem 1rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
 }
 
 .ai-table td {
@@ -350,16 +347,16 @@
 }
 
 .ai-forecast-row:hover {
-  background-color: #f0f9ff !important; /* Light blue hover */
+  background-color: #f0f9ff !important; 
 }
 
 .ai-row-active {
-  background-color: #e0f2fe !important; /* Active blue */
+  background-color: #e0f2fe !important; 
 }
 
 .demand-score {
   font-weight: 700;
-  color: #10b981; /* Emerald green */
+  color: #10b981; 
 }
 
 .ai-risk-badge {
@@ -367,53 +364,53 @@
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.75rem;
-  color: #fff; /* Default text color */
+  color: #fff; 
 }
 
 .risk-critical {
-  background-color: #ef4444 !important; /* Red */
+  background-color: #ef4444 !important; 
 }
 
 .risk-high {
-  background-color: #f97316 !important; /* Orange */
+  background-color: #f97316 !important; 
 }
 
 .risk-moderate {
-  background-color: #eab308 !important; /* Yellow */
-  color: #000 !important; /* Dark text for yellow bg */
+  background-color: #eab308 !important; 
+  color: #000 !important;
 }
 
 .risk-default {
-  background-color: #64748b !important; /* Slate */
+  background-color: #64748b !important; 
 }
 
-/* Insights List */
+
 .ai-insight-list {
   padding: 1.5rem;
 }
 
 .ai-insight-ul {
   margin: 0;
-  padding-left: 1.5rem; /* Indentation */
-  list-style-type: disc; /* Bullet points */
+  padding-left: 1.5rem; 
+  list-style-type: disc; 
 }
 
 .ai-insight-ul {
   margin: 0;
-  padding-left: 1.5rem; /* Indentation */
-  list-style-type: disc; /* Bullet points */
+  padding-left: 1.5rem; 
+  list-style-type: disc; 
 }
 
 .ai-insight-li {
   margin-bottom: 0.75rem;
   line-height: 1.6;
   color: #475569;
-  padding-left: 0.5rem; /* Space between bullet and text */
-  font-weight: 500; /* Slightly bold */
+  padding-left: 0.5rem; 
+  font-weight: 500; 
 }
 
 .ai-insight-li::marker {
-  color: #0098da; /* Blue bullets */
+  color: #0098da; 
   font-size: 1.1em;
 }
 
@@ -445,7 +442,6 @@
   color: #94a3b8;
 }
 
-/* Custom Scrollbar for the dashboard */
 .ai-tab-body::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -461,7 +457,6 @@
   background: #94a3b8;
 }
 
-/* Mobile / small screens: stacked, scrollable, no fixed aspect */
 @media (max-width: 991px) {
   .ai-insights-shell {
     aspect-ratio: auto;

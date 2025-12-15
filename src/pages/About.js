@@ -45,7 +45,7 @@ function About() {
       </section>
       <footer className="about-footer">
         <p>
-          Developed with ❤️ by <a href="https://github.com/sunerasamuditha" target="_blank" rel="noopener noreferrer">Team Five</a> © 2025. All rights reserved.
+          Developed with ❤️ by <a href="https://github.com/sunerasamuditha" target="_blank" rel="noopener noreferrer">SUNERA SAMUDITHA</a> © 2025. All rights reserved.
         </p>
       </footer>
     </div>
