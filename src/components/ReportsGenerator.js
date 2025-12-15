@@ -30,7 +30,6 @@ const ReportsGenerator = () => {
     const [knownTypes, setKnownTypes] = useState(new Set());
     const [knownDistricts, setKnownDistricts] = useState(new Set());
 
-    // Levenshtein Distance for Typos
     const getEditDistance = (a, b) => {
         if (a.length === 0) return b.length;
         if (b.length === 0) return a.length;
@@ -53,17 +52,15 @@ const ReportsGenerator = () => {
                 return res.text();
             })
             .then(text => {
-                // Replace NaN with null to make it valid JSON
+              
                 const sanitizedText = text.replace(/:\s*NaN/g, ': null'); 
-                const data = JSON.parse(sanitizedText);
+                const data = JSON.parse(sanitizedText);                
                 
-                // Clean data
                 const cleanedData = data.map(row => ({
                     ...row,
                     District: row.District ? row.District.trim() : "",
                     'Type of Seminar': row['Type of Seminar'] ? row['Type of Seminar'].trim() : "",
-                    'Name of the School ': row['Name of the School '] ? row['Name of the School '].trim() : "",
-                    // Ensure numeric values are numbers
+                    'Name of the School ': row['Name of the School '] ? row['Name of the School '].trim() : "",                    
                     'Number of Students participated': Number(row['Number of Students participated']) || 0
                 }));
                 setRawData(cleanedData);
@@ -137,31 +134,28 @@ const ReportsGenerator = () => {
         const words = input.toLowerCase().split(' ');
         const newFilters = { year: '', month: '', district: '', type: '' };
 
+// fuzzy logics
+
         words.forEach(word => {
             if (word.length < 3 && isNaN(word)) return;
 
-            // Detect Year
             if (!isNaN(word) && word.length === 4) {
                 newFilters.year = word;
             }
 
-            // Detect Month (Fuzzy)
             knownMonths.forEach((mon, idx) => {
                 if (getEditDistance(word, mon.toLowerCase()) <= 1) {
                     newFilters.month = String(idx + 1).padStart(2, '0');
                 }
             });
 
-            // Detect District (Fuzzy)
             Array.from(knownDistricts).forEach(dist => {
-                if (getEditDistance(word, dist.toLowerCase()) <= 1) {
-                    // Find exact match in options if possible, or use the known district
+                if (getEditDistance(word, dist.toLowerCase()) <= 1) {                    
                     const match = options.districts.find(d => d.toLowerCase() === dist.toLowerCase()) || dist;
                     newFilters.district = match;
                 }
             });
 
-            // Detect Type (Fuzzy)
             Array.from(knownTypes).forEach(type => {
                 if (type.toLowerCase().includes(word) || getEditDistance(word, type.toLowerCase()) <= 2) {
                     newFilters.type = type;
@@ -182,21 +176,18 @@ const ReportsGenerator = () => {
         }
 
         const doc = new jsPDF();
-
-        // Title
+        
         doc.setFillColor(41, 128, 185);
         doc.rect(0, 0, 210, 20, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(16);
         doc.text("Ganitha Saviya - Seminar Report", 14, 13);
-
-        // Metadata
+       
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(10);
         doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 30);
 
-        // Show active filters in PDF
-        let filterText = "Filters: ";
+                let filterText = "Filters: ";
         const activeFilters = [];
         if (filters.year) activeFilters.push(`Year: ${filters.year}`);
         if (filters.month) activeFilters.push(`Month: ${knownMonths[parseInt(filters.month) - 1]}`);
@@ -205,8 +196,7 @@ const ReportsGenerator = () => {
         
         filterText += activeFilters.length > 0 ? activeFilters.join(", ") : "None (All Records)";
         doc.text(filterText, 14, 35);
-
-        // Table
+       
         autoTable(doc, {
             startY: 40,
             head: [['Date', 'District', 'School', 'Type', 'Medium', 'Students', 'Volunteers']],
