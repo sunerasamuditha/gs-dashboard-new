@@ -210,18 +210,24 @@ const AIInsights = () => {
   const insightItems = useMemo(() => {
     const text = data?.ai_remarks_insights;
     if (!text) return [];
-    const normalized = String(text).replace(/\r\n/g, '\n');
-    const startAt = normalized.search(/(^|\n)\s*1\./);
-    const body = startAt >= 0 ? normalized.slice(startAt) : normalized;
-    const items = body
-      .split(/\n(?=\s*\d+\.)/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((s) => s.replace(/^\s*\d+\.\s*/, '').trim());
-    return items;
+    
+    // Split by newline to handle bullet points or numbered lists
+    return String(text)
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => line.replace(/^(\*|-|\d+\.)\s*/, '')); // Remove *, -, or 1. markers
   }, [data]);
 
   const visibleInsightItems = showAllInsights ? insightItems : insightItems.slice(0, 4);
+
+  const getRiskBadgeClass = (level) => {
+    const l = (level || '').toLowerCase();
+    if (l.includes('critical')) return 'risk-critical';
+    if (l.includes('high')) return 'risk-high';
+    if (l.includes('moderate')) return 'risk-moderate';
+    return 'risk-default';
+  };
 
   if (loading) {
     return (
@@ -261,7 +267,7 @@ const AIInsights = () => {
         >
           <div className="ai-insights-top">
             <div className="ai-title-block">
-              <h2 className="ai-section-title">AI Overview & Insights</h2>
+              <h2 className="ai-section-title">Smart Overview & Insights</h2>
               <div className="ai-subtitle">
                 <span className="ai-subtitle-label">Last updated:</span> {data.last_updated}
               </div>
@@ -336,7 +342,7 @@ const AIInsights = () => {
                   </span>
                 </div>
                 <div className="ai-selection-item">
-                  <span className="ai-selection-label">Forecast:</span>{' '}
+                  <span className="ai-selection-label">:</span>{' '}
                   <span className="ai-selection-value">
                     {selectedDistrict && selectedForecast
                       ? `${selectedForecast.predicted_students} students / ${selectedForecast.paper_sheets_needed} sheets`
@@ -421,9 +427,9 @@ const AIInsights = () => {
                             <tr key={index}>
                               <td>{volunteer.name}</td>
                               <td>
-                                <Badge bg="danger" className="ai-risk-badge">
+                                <span className={`badge rounded-pill ai-risk-badge ${getRiskBadgeClass(volunteer.risk_level)}`}>
                                   {volunteer.risk_level}
-                                </Badge>
+                                </span>
                               </td>
                               <td>{volunteer.reason}</td>
                             </tr>
@@ -440,13 +446,13 @@ const AIInsights = () => {
                       {visibleInsightItems.length === 0 ? (
                         <div className="ai-empty">No insights available.</div>
                       ) : (
-                        <ol className="ai-insight-ol">
+                        <ul className="ai-insight-ul">
                           {visibleInsightItems.map((item, idx) => (
                             <li key={idx} className="ai-insight-li">
                               {splitBold(item)}
                             </li>
                           ))}
-                        </ol>
+                        </ul>
                       )}
                     </div>
 

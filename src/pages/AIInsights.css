@@ -141,7 +141,7 @@
 }
 
 .ai-tabs-card {
-  /* No padding on card itself to let tabs flush */
+  
 }
 
 .ai-card-header {
@@ -367,6 +367,24 @@
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.75rem;
+  color: #fff; /* Default text color */
+}
+
+.risk-critical {
+  background-color: #ef4444 !important; /* Red */
+}
+
+.risk-high {
+  background-color: #f97316 !important; /* Orange */
+}
+
+.risk-moderate {
+  background-color: #eab308 !important; /* Yellow */
+  color: #000 !important; /* Dark text for yellow bg */
+}
+
+.risk-default {
+  background-color: #64748b !important; /* Slate */
 }
 
 /* Insights List */
@@ -374,15 +392,29 @@
   padding: 1.5rem;
 }
 
-.ai-insight-ol {
+.ai-insight-ul {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 1.5rem; /* Indentation */
+  list-style-type: disc; /* Bullet points */
+}
+
+.ai-insight-ul {
+  margin: 0;
+  padding-left: 1.5rem; /* Indentation */
+  list-style-type: disc; /* Bullet points */
 }
 
 .ai-insight-li {
   margin-bottom: 0.75rem;
   line-height: 1.6;
   color: #475569;
+  padding-left: 0.5rem; /* Space between bullet and text */
+  font-weight: 500; /* Slightly bold */
+}
+
+.ai-insight-li::marker {
+  color: #0098da; /* Blue bullets */
+  font-size: 1.1em;
 }
 
 .insight-highlight {
