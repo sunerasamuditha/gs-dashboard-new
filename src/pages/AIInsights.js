@@ -273,15 +273,22 @@ const AIInsights = () => {
                 <OverlayTrigger
                   placement="bottom"
                   overlay={
-                    <BSTooltip id="ai-tooltip">
-                      This AI-powered segment analyzes real-time data to forecast resource needs, identify volunteer risks, and provide actionable insights for better decision-making.
+                    <BSTooltip id="ai-tooltip" className="text-start">
+                      <div className="p-2" style={{ textAlign: 'left', maxWidth: '300px' }}>
+                        <div className="mb-2"><strong>AI Model Overview:</strong></div>
+                        <ul className="ps-3 mb-0">
+                          <li className="mb-1">Multi-model AI analysis based on raw data of all past and present seminars.</li>
+                          <li className="mb-1"><strong>Forecast:</strong> Predicts next month's student expectations and papers needed.</li>
+                          <li className="mb-1"><strong>Demand:</strong> Outlines schools with highest activity.</li>
+                          <li className="mb-1"><strong>Risk:</strong> Shows volunteer inactivity during the last 3 months.</li>
+                          <li><strong>Insights:</strong> Summarizes feedback entries for efficient decision making.</li>
+                        </ul>
+                      </div>
                     </BSTooltip>
                   }
                 >
-                  <span className="ms-2" style={{ cursor: 'pointer', verticalAlign: 'middle', opacity: 0.8 }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-circle-fill" viewBox="0 0 16 16">
-                      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-                    </svg>
+                  <span className="ms-3 badge bg-white text-primary" style={{ cursor: 'pointer', fontSize: '0.8rem', verticalAlign: 'middle', fontWeight: '600' }}>
+                    Learn about this
                   </span>
                 </OverlayTrigger>
               </h2>
